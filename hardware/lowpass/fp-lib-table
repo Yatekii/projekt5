@@ -1,3 +1,3 @@
 (fp_lib_table
-  (lib (name projekt5)(type KiCad)(uri "$(KIPRJMOD)\\..\\libraries\\SDRfootprints.pretty")(options "")(descr ""))
+  (lib (name projekt5)(type KiCad)(uri "$(KIPRJMOD)/../libraries/SDRfootprints.pretty")(options "")(descr ""))
 )
