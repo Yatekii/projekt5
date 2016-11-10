@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name SDRfootprints)(type KiCad)(uri ${KIPRJMOD}/../libraries/SDRfootprints.pretty)(options "")(descr ""))
+)

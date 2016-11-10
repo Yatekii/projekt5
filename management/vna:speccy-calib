@@ -1,0 +1,23 @@
+pcb pool
+
+<Meas>
+  - Select Transmission or Reflection
+
+<Center>
+  - Selektieren
+<Span>
+  - Selektieren
+
+<Cal>
+  -> Reflection 1 Port
+    - Select Male/Female
+      - Open
+      - Short
+      - Load
+
+<Log Mag>
+  Betrag in dB
+
+<Polar>
+
+<Smith Chart>
