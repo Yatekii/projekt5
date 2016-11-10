@@ -1850,7 +1850,7 @@ F 3 "" H 4950 4550 60  0000 C CNN
 	1    4950 4550
 	1    0    0    -1  
 $EndComp
-Text Label 6200 4550 2    60   ~ 0
+Text Label 6250 4550 2    60   ~ 0
 CLK_EXTERNAL
 $Comp
 L +3V3 #PWR050
@@ -1876,17 +1876,6 @@ F 3 "" H 5200 4900 50  0000 C CNN
 $EndComp
 Text Notes 6100 5300 0    60   ~ 0
 Clock Buffer
-$Comp
-L TEST_1P W4
-U 1 1 58260A20
-P 6250 4550
-F 0 "W4" H 6250 4820 50  0000 C CNN
-F 1 "CLCK EXT" H 6250 4750 50  0000 C CNN
-F 2 "Measurement_Points:Test_Point_Keystone_5005-5009_Compact" H 6450 4550 50  0001 C CNN
-F 3 "" H 6450 4550 50  0000 C CNN
-	1    6250 4550
-	1    0    0    -1  
-$EndComp
 $Comp
 L C C34
 U 1 1 58262F3D
