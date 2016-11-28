@@ -1,0 +1,12 @@
+Vorschläge Hufschmid 2016-11-21:
+Teamwork:
+ - Aufeinander zugehen
+ - Erwartungen abstimmen
+ - klare Aufgabentrennung
+ - Probleme offen ansprechen
+
+Vorgehen:
+- Print bestücken
+- Zwei Boards bestücken für Redundanz/Verifikation
+- Optional Rauschmessung
+- Intermodulation, 1dB Kompressionspunkt
