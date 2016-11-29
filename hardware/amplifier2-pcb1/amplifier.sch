@@ -3367,20 +3367,4 @@ Text Notes 16950 10050 0    197  ~ 0
 An 8-bit DAC for gain regulation has been chosen.\nIt is programmed using I2C; an FPGA implementation is required.\nIf a higher resolution is needed, it can be upgraded to a 10- or 12-bit DAC.\nIf noise behavior is okay is to be tested since the datasheet didn’t tell much.
 Text Notes 16950 11100 0    197  ~ 0
 The ADC part has also been included.\nIt has a groundplane as close as possible to the one in the app. note.\nAdiddionally the pre-ADC circuitry can now thoroughly be tested.
-Wire Notes Line
-	3200 10450 3200 12400
-Wire Notes Line
-	3200 12400 800  12400
-Text Notes 800  12400 0    60   ~ 0
-Possibly needs to be fed from 5V net!
-Wire Notes Line
-	3200 10650 2350 10650
-Wire Notes Line
-	2350 10650 2350 10050
-Wire Notes Line
-	2150 10000 2150 10050
-Wire Notes Line
-	2150 10050 2550 10050
-Wire Notes Line
-	2550 10050 2550 10000
 $EndSCHEMATC
