@@ -25,7 +25,7 @@ instr.write(":MMEM:LOAD ""Test1/State01.sta""")
 
 # calibrate through
 instr.write(":SENS1:CORR:COLL:METH:THRU 1,2")
-instr.write(":SENS1:CORR:COLL:THRU")
+instr.write(":SENS1:CORR:COLL:THRU 2,1")
 instr.write(":SENS1:CORR:COLL:SAVE")
 
 # calibrate reflection
