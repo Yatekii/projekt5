@@ -22,3 +22,15 @@ instr.write(":SENS1:FREQ:STOP 100E6")
 instr.write(":MMEM:STOR:STYP CDST")
 instr.write(":MMEM:STOR ""Test1/State01.sta""")
 instr.write(":MMEM:LOAD ""Test1/State01.sta""")
+
+# calibrate through
+instr.write(":SENS1:CORR:COLL:METH:THRU 1,2")
+instr.write(":SENS1:CORR:COLL:THRU")
+instr.write(":SENS1:CORR:COLL:SAVE")
+
+# calibrate reflection
+instr.write(":SENS1:CORR:COLL:METH:SOLT1 1")
+instr.write(":SENS1:CORR:COLL:OPEN")
+instr.write(":SENS1:CORR:COLL:SHORT")
+instr.write(":SENS1:CORR:COLL:LOAD")
+instr.write(":SENS1:CORR:COLL:SAVE")
