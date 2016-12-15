@@ -14,11 +14,11 @@ print(instr.ask(":CALC1:DATA:SDAT?"))
 instr.write(":CALC1:FORM SMIT")
 
 # setup measurement
-instr.write(":CALC1:PAR1:DEF S21)
-instr.write(":SENS1:FREQ:STAR 100E6)
-instr.write(":SENS1:FREQ:STOP 100E6)
+instr.write(":CALC1:PAR1:DEF S21")
+instr.write(":SENS1:FREQ:STAR 100E6")
+instr.write(":SENS1:FREQ:STOP 100E6")
 
 # enable storing calibration
-instr.write(":MMEM:STOR:STYP CDST)
-instr.write(":MMEM:STOR ""Test1/State01.sta"")
-instr.write(":MMEM:LOAD ""Test1/State01.sta"")
+instr.write(":MMEM:STOR:STYP CDST")
+instr.write(":MMEM:STOR ""Test1/State01.sta""")
+instr.write(":MMEM:LOAD ""Test1/State01.sta""")
