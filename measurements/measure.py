@@ -87,7 +87,7 @@ try:
             print('Setting output voltage to {0:.2f}V.'.format(V), end='\r')
             psu_gain.voltage = V
             vna.display_format = 'MLIN'
-            data = vna.current_data
+            data = vna.single_measurement()
             np.savetxt('reading {0}.csv'.format(V), data, delimiter=',')
             # TODO: Read S11
             # TODO: Read input Z
@@ -102,7 +102,7 @@ try:
             print('Setting output voltage to {0:.2f}V.'.format(V), end='\r')
             psu_gain.voltage = V
             vna.display_format = 'MLIN'
-            data = vna.current_data
+            data = vna.single_measurement()
             np.savetxt('reading {0}.csv'.format(V), data, delimiter=',')
             # TODO: Read S21
 

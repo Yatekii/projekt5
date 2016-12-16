@@ -58,7 +58,7 @@ class E5071B(Device):
     def display_format(self):
         return self._instr.ask(':CALC1:FORM?')
 
-    @select_display_format.setter
+    @display_format.setter
     def display_format(self, value):
         if value in ['MLIN', 'MLOG', 'SMIT']:
             self._instr.write(':CALC1:FORM {0}'.format(value))
@@ -81,6 +81,25 @@ class E5071B(Device):
         else:
             raise ValueError('{0} is not a valid method.'.format(value))
 
+    @property
+    def continuous_measurement(self):
+        return False if self._instr.write(':INIT1:CONT?') == 'OFF' else True
+
+    @continuous_measurement.setter
+    def continuous_measurement(self, value):
+        self._instr.write(':INIT1:CONT {0}'.format('ON' if value else 'OFF'))
+
+    @property
+    def measurement_trigger(self):
+        return self._instr.write(':TRIG:SOUR?')
+
+    @measurement_trigger.setter
+    def measurement_trigger(self, value):
+        if value in ['INT', 'EXT', 'MAN', 'BUS']:
+            self._instr.write(':TRIG:SOUR {0}'.format(value))
+        else:
+            raise ValueError('{0} is not a valid source.'.format(value))
+
     def activate_calibration(self):
         self._instr.write(':SENS1:CORR:COLL:SAVE')
 
@@ -89,3 +108,10 @@ class E5071B(Device):
 
     def load_calibration(self, filename):
         self._instr.write(':MMEM:LOAD ""{0}""'.format(filename))
+
+    def single_measurement(self):
+        self.continuous_measurement = False
+        self.measurement_trigger = 'BUS'
+        self._instr.write(':TRIG:SING')
+        self._instr.ask('*OPC?')
+        return self.current_data
