@@ -1,3 +1,4 @@
+
 import usbtmc
 import numpy as np
 
@@ -71,8 +72,10 @@ class E5071B(Device):
 
     @property
     def current_data(self):
-        data = instr.ask(':CALC1:DATA:SDAT?').split(',')
-        data = [np.complex64(data[i], data[i+1]) for i in range(len(data) / 2)]
+        data = self._instr.ask(':CALC1:DATA:SDAT?').split(',')
+        realpart = list(map(float, data[::2]))
+        imagpart = list(map(float, data[1::2]))
+        data = np.vectorize(complex)(realpart, imagpart)
         return data
 
     @property
@@ -119,7 +122,8 @@ class E5071B(Device):
 
     @property
     def output_power(self):
-        return float(self._instr.write(':SOUR1:POW'))
+        pass
+        # return self._instr.ask(':SOUR1:POW?')
 
     @output_power.setter
     def output_power(self, value):
@@ -129,17 +133,18 @@ class E5071B(Device):
         self._instr.write(':SENS1:CORR:COLL:SAVE')
 
     def store_calibration(self, filename):
-        print(':MMEM:STOR ""{0}""'.format(filename))
-        self._instr.write(':MMEM:STOR ""{0}""'.format(filename))
+        self._instr.write(':MMEM:STOR \"{0}\"'.format(filename))
 
     def load_calibration(self, filename):
-        self._instr.write(':MMEM:LOAD ""{0}""'.format(filename))
+        self._instr.write(':MMEM:LOAD \"{0}\"'.format(filename))
 
     def create_directory(self, name):
-        self._instr.write(':MMEM:MDIR ""{0}""'.format(name))
+        self._instr.write(':MMEM:MDIR \"{0}\"'.format(name))
 
     def single_measurement(self):
-        self.continuous_measurement = False
+        # self._instr.write(':DISP:WIND1:ACT')
+        # self._instr.write(':CALC1:PAR1:SEL')
+        self.continuous_measurement = True
         self.measurement_trigger = 'BUS'
         self._instr.write(':TRIG:SING')
         self._instr.ask('*OPC?')

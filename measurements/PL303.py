@@ -22,7 +22,7 @@ class PL303(Device):
 
     @property
     def vtg_limit(self):
-        self._serial.write(b'V1?\n')
+        self._serial.write(b'OVP1?\n')
         return int(self._serial.readline()[:-2].split(' ')[2])
 
     @vtg_limit.setter
@@ -40,7 +40,7 @@ class PL303(Device):
     @cur_limit.setter
     def cur_limit(self, value):
         if 0 < value < 3:
-            self._serial.write(b'I1 %3.f\n' % value)
+            self._serial.write(b'I1 %.3f\n' % value)
         else:
             raise ValueError('Given value {0} is not in required range (0, 3)A.'.format(value))
 
