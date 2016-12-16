@@ -5,15 +5,20 @@ from device import Device
 
 
 class PL303(Device):
-    def __init__(self, serial, device_addr=None):
-        self._serial = serial.Serial('/dev/tty.usbmodem456031')
 
-        ser_psu_gain.write(b'ADDRESS?\n')
-        line = ser_psu_gain.readline()
+    device_name = 'PL303-P'
+
+    def __init__(self, ser, serial_no = None):
+        self._serial = serial.Serial(ser)
+
+        self._serial.write(b'*IDN?\n')
+        device = self._serial.readline().replace(b' ', b'').decode('ascii').split(',')
+        self._vna_manufacturer, self._model_nr, self._serial_no, self._version = device
 
         self.valid = True
-        if device_addr:
-            self.valid = line[:-2] == device_addr
+        if serial_no:
+            print(self._model_nr, self._serial_no)
+            self.valid = self._model_nr == self.device_name and self._serial_no == serial_no
 
     @property
     def vtg_limit(self):
@@ -46,7 +51,7 @@ class PL303(Device):
 
     @output.setter
     def output(self, value):
-            ser_psu_gain.write(b'OP1 {0}\n'.format(1 if value else 0))
+            self._serial.write(b'OP1 %d\n' % (1 if value else 0))
 
     @property
     def voltage(self):

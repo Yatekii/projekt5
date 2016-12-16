@@ -6,7 +6,7 @@ import PL303
 import E5071B
 
 # Getting Terminal size
-term_rows, term_columns = os.popen('stty size', 'r').read().split()
+term_rows, term_columns = map(int, os.popen('stty size', 'r').read().split())
 
 psu_gain_serial = '/dev/tty.usbmodem456031'
 vna_id_tuple = (2391, 1289)
@@ -14,40 +14,46 @@ vna_id_tuple = (2391, 1289)
 calibration_s11 = 'cal/s11.sta'
 calibration_s21 = 'cal/s21.sta'
 
-psu_gain_device_id = '11'
-vna_serial = 'MY42404018'
+psu_gain_serial_no = '456038'
+vna_serial_no = 'MY42404018'
 
 vtg_limit = 1 # Volts
 vtg_gain_steps = range(4, 101) # e-10 Volts
 cur_limit = 1e-3 # Ampere
 
 freq_sweep_range = (3e5, 5e7) # Hz
+output_power = -20 # dBm
 
 # Connect to PSU
-psu_gain = PL303(psu_gain_serial, psu_gain_device_id)
+psu_gain = PL303.PL303(psu_gain_serial, psu_gain_serial_no)
 print('Connected to Gain PSU')
 
 # Connect to VNA
-vna = E5071B(vna_id_tuple)
+vna = E5071B.E5071B(vna_id_tuple, vna_serial_no)
 print('Connected to VNA.')
 
 try:
-    if psu_gain.valid and vna_device[2] == vna_serial:
+    if psu_gain.valid and vna.valid:
 
         print('Configuring PSU.')
-        print('Setting voltage limit to {0.2f}V.'.format(vtg_limit))
+        print('Setting voltage limit to {0:.2f}V.'.format(vtg_limit))
         psu_gain.vtg_limit = vtg_limit
-        print('Setting current limit to {0.3f}A.'.format(cur_limit))
+        print('Setting current limit to {0:.3f}A.'.format(cur_limit))
         psu_gain.cur_limit = cur_limit
         print('Configuration of Gain PSU done.')
         print('-' * term_columns)
 
         print('Configuring VNA.')
-        print('Setting VNA sweep range to ({0:.2E}, {1:.2E})Hz.'.format(freq_sweep_range))
+        print('Setting VNA sweep range to ({0:.2E}, {1:.2E})Hz.'.format(*freq_sweep_range))
         vna.frequency_range = freq_sweep_range
         print('Sweep range set.')
-        print('Setting output power to {0:.2f}dBm.')
+        print('Setting output power to {0:.2f}dBm.'.format(output_power))
+        vna.output_power = output_power
         print('Output power set')
+        print('Creating cal directory.')
+        vna.create_directory('cal')
+        input()
+        print('Created cal directory.')
         print('Configuration of VNA done.')
         print('-' * term_columns)
 
@@ -56,6 +62,7 @@ try:
         print('Calibrating open.')
         _in = input('Please leave port 1 cable of the VNA unconnected. Then hit Enter.')
         vna.mode = 'S11'
+        vna.calibration_method = ('SOLT1', 1)
         vna.calibrate('OPEN', 1)
         print('Calibrating open done.')
 
@@ -66,11 +73,13 @@ try:
 
         print('Calibrating load.')
         _in = input('Please screw a 50 Ohm load on to the port 1 cable of the VNA. Then hit Enter.')
-        vna.calibrate('THRU', 1)
+        vna.calibrate('LOAD', 1)
+        print('Calibrating load done.')
+        print('Storing calibration.')
         vna.activate_calibration()
         vna.calibration_save_format = 'CDST'
         vna.store_calibration(calibration_s11)
-        print('Calibrating load done.')
+        print('Calibration stored.')
 
         # Calibrating transmission
         print('Calibrating short for 2 port.')

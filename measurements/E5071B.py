@@ -6,14 +6,18 @@ from device import Device
 
 
 class E5071B(Device):
-    def __init__(self, device_id, serial_nr=None):
+
+    device_name = 'E5071B'
+
+    def __init__(self, device_id, serial_no = None):
         self._instr = usbtmc.Instrument(*device_id)
         device = self._instr.ask("*IDN?").split(',')
-        self._vna_manufacturer, self._model_nr, self._serial_nr, self._version = device
+        self._vna_manufacturer, self._model_nr, self._serial_no, self._version = device
 
         self.valid = True
-        if serial_nr:
-            self._serial_nr = self._serial_nr == serial_nr
+        if serial_no:
+            print(self._model_nr, self._serial_no)
+            self.valid = self._model_nr == self.device_name and self._serial_no == serial_no
 
     @property
     def frequency_range(self):
@@ -25,7 +29,7 @@ class E5071B(Device):
     @frequency_range.setter
     def frequency_range(self, value):
         r = (3e5, 8.5e9)
-        if r[0] < value[0] < value[1] < r[1]:
+        if r[0] <= value[0] < value[1] <= r[1]:
             self._instr.write(':SENS1:FREQ:STAR {0:.2E}'.format(value[0]))
             self._instr.write(':SENS1:FREQ:STOP {0:.2E}'.format(value[1]))
         else:
@@ -71,15 +75,28 @@ class E5071B(Device):
         data = [np.complex64(data[i], data[i+1]) for i in range(len(data) / 2)]
         return data
 
+    @property
+    def calibration_method(self):
+        return self._instr.ask(':SENS1:CORR:COLL:METH:TYPE?')
+
+    @calibration_method.setter
+    def calibration_method(self, value):
+        if value[0] in ['OPEN', 'SHOR', 'THRU', 'ERES', 'SOLT1', 'SOLT2']:
+            self._instr.write(':SENS1:CORR:COLL:METH:{0} {1}'.format(*value))
+            self._instr.ask('*OPC?')
+        else:
+            raise ValueError('{0} is not a valid method.'.format(value[0]))
+
     def calibrate(self, method, port = None):
-        if method in ['OPEN', 'SHORT', 'THRU'] and vna.mode == 'S11':
-            self._instr.write(':SENS1:CORR:COLL:METH:SOLT1 {0}'.format(value))
-            self._instr.write(':SENS1:CORR:COLL:{0} {1}'.format(method, ','.join(port)))
-        elif method == 'THRU' and vna.mode == 'S21':
+        if method in ['OPEN', 'SHORT', 'LOAD'] and self.mode == 'S11':
+            self._instr.write(':SENS1:CORR:COLL:{0} {1}'.format(method, port))
+            self._instr.ask('*OPC?')
+        elif method == 'THRU' and self.mode == 'S21':
             self._instr.write(':SENS1:CORR:COLL:METH:THRU 1,2')
             self._instr.write(':SENS1:CORR:COLL:THRU 1,2')
+            self._instr.ask('*OPC?')
         else:
-            raise ValueError('{0} is not a valid method.'.format(value))
+            raise ValueError('{0} is not a valid method.'.format(method))
 
     @property
     def continuous_measurement(self):
@@ -112,10 +129,14 @@ class E5071B(Device):
         self._instr.write(':SENS1:CORR:COLL:SAVE')
 
     def store_calibration(self, filename):
+        print(':MMEM:STOR ""{0}""'.format(filename))
         self._instr.write(':MMEM:STOR ""{0}""'.format(filename))
 
     def load_calibration(self, filename):
         self._instr.write(':MMEM:LOAD ""{0}""'.format(filename))
+
+    def create_directory(self, name):
+        self._instr.write(':MMEM:MDIR ""{0}""'.format(name))
 
     def single_measurement(self):
         self.continuous_measurement = False

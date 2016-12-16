@@ -30,7 +30,7 @@ instr.write(":SENS1:CORR:COLL:SAVE")
 
 # calibrate reflection
 instr.write(":SENS1:CORR:COLL:METH:SOLT1 1")
-instr.write(":SENS1:CORR:COLL:OPEN")
-instr.write(":SENS1:CORR:COLL:SHORT")
-instr.write(":SENS1:CORR:COLL:LOAD")
-instr.write(":SENS1:CORR:COLL:SAVE")
+instr.write(":SENS1:CORR:COLL:OPEN 1")
+instr.write(":SENS1:CORR:COLL:SHORT 1")
+instr.write(":SENS1:CORR:COLL:LOAD 1")
+instr.write(":SENS1:CORR:COLL:SAVE 1")
