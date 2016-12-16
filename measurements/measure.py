@@ -39,14 +39,17 @@ try:
         psu_gain.vtg_limit = vtg_limit
         print('Setting current limit to {0.3f}A.'.format(cur_limit))
         psu_gain.cur_limit = cur_limit
-        print('Configuration of VNA done.')
+        print('Configuration of Gain PSU done.')
         print('-' * term_columns)
 
         print('Configuring VNA.')
-        # Set ranges of sweeps
         print('Setting VNA sweep range to ({0:.2E}, {1:.2E})Hz.'.format(freq_sweep_range))
         vna.frequency_range = freq_sweep_range
         print('Sweep range set.')
+        print('Setting output power to {0:.2f}dBm.')
+        print('Output power set')
+        print('Configuration of VNA done.')
+        print('-' * term_columns)
 
         print('Calibrating VNA.')
         # calibrate reflection

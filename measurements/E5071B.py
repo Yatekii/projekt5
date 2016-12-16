@@ -100,6 +100,14 @@ class E5071B(Device):
         else:
             raise ValueError('{0} is not a valid source.'.format(value))
 
+    @property
+    def output_power(self):
+        return float(self._instr.write(':SOUR1:POW'))
+
+    @output_power.setter
+    def output_power(self, value):
+        self._instr.write(':SOUR1:POW {0:.2f}'.format(value))
+
     def activate_calibration(self):
         self._instr.write(':SENS1:CORR:COLL:SAVE')
 
