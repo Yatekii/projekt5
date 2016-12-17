@@ -1,6 +1,9 @@
 # Python
 __pycache__
 
+# Jupyter
+.ipynb_checkpoints
+
 # For PCBs designed using KiCad: http://www.kicad-pcb.org/
 
 # Temporary files
