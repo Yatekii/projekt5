@@ -9,6 +9,8 @@ import E5071B
 # Getting Terminal size
 term_rows, term_columns = map(int, os.popen('stty size', 'r').read().split())
 
+output_directory = 'vga_2016-12-19_40dBm_LNA'
+
 if os.path.exists('/dev/tty.usbmodem456031'):
     psu_gain_serial = '/dev/tty.usbmodem456031'
 elif os.path.exists('/dev/ttyACM0'):
@@ -29,7 +31,13 @@ vtg_gain_steps = range(4, 101) # e-10 Volts
 cur_limit = 1e-3 # Ampere
 
 freq_sweep_range = (3e5, 5e7) # Hz
-output_power = -30 # dBm
+output_power = -40 # dBm
+sweep_points = 5e3 # Points
+sweep_bandwidth = 1e3 # Hz
+
+if not os.path.exists(output_directory):
+    os.makedirs(output_directory)
+print('Output dir exists.')
 
 # Connect to PSU
 psu_gain = PL303.PL303(psu_gain_serial, psu_gain_serial_no)
@@ -56,7 +64,13 @@ try:
         print('Sweep range set.')
         print('Setting output power to {0:.2f}dBm.'.format(output_power))
         vna.output_power = output_power
-        print('Output power set')
+        print('Output power set.')
+        print('Setting points to {0:.2f}Points.'.format(sweep_points))
+        vna.sweep_points = sweep_points
+        print('Sweep points set.')
+        print('Setting bandwidth {0:.2f}Hz.'.format(sweep_bandwidth))
+        vna.sweep_bandwidth = sweep_bandwidth
+        print('Sweep points set.')
         print('Creating cal directory.')
         vna.create_directory('cal')
         time.sleep(1)
@@ -100,23 +114,23 @@ try:
             vna.store_calibration(calibration_s21)
             print('Calibrating short done.')
 
-        _in = input('Connect device for reflection test to Port 1 and terminate it with 50 Ohms. Then hit Enter.')
-        vna.load_calibration(calibration_s11)
-        vna.output_power = output_power
-
-        # Stepping through amplifications
-        psu_gain.output = True
-        for V in vtg_gain_steps:
-            V /= 100
-            print('Setting output voltage to {0:.2f}V.'.format(V), end='\r')
-            psu_gain.voltage = V
-            time.sleep(0.5)
-            vna.display_format = 'MLIN'
-            data = vna.single_measurement()
-            np.savetxt('reading_reflection_{0}.csv'.format(V), data, delimiter=',')
-            # TODO: Read S11
-            # TODO: Read input Z
-            # TODO: Read SWR
+        # _in = input('Connect device for reflection test to Port 1 and terminate it with 50 Ohms. Then hit Enter.')
+        # vna.load_calibration(calibration_s11)
+        # vna.output_power = output_power
+        #
+        # # Stepping through amplifications
+        # psu_gain.output = True
+        # for V in vtg_gain_steps:
+        #     V /= 100
+        #     print('Setting output voltage to {0:.2f}V.'.format(V), end='\r')
+        #     psu_gain.voltage = V
+        #     time.sleep(0.5)
+        #     vna.display_format = 'MLIN'
+        #     data = vna.single_measurement()
+        #     np.savetxt('{0}/reading_reflection_{0:.2f}.csv'.format(output_directory, V), data, delimiter=',')
+        #     # TODO: Read S11
+        #     # TODO: Read input Z
+        #     # TODO: Read SWR
 
         _in = input('Connect device for through test to Port 1 and 2. Then hit Enter.')
         # Load calibration s21
@@ -131,7 +145,7 @@ try:
             time.sleep(0.5)
             vna.display_format = 'MLIN'
             data = vna.single_measurement()
-            np.savetxt('reading_transmission_{0}.csv'.format(V), data, delimiter=',')
+            np.savetxt('{0}/reading_transmission_{1:.2f}.csv'.format(output_directory, V), data, delimiter=',')
             # TODO: Read S21
 
         psu_gain.output = False

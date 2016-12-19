@@ -1,4 +1,3 @@
-
 import usbtmc
 import numpy as np
 
@@ -10,8 +9,10 @@ class E5071B(Device):
 
     device_name = 'E5071B'
 
-    def __init__(self, device_id, serial_no = None):
+    def __init__(self, device_id, serial_no=None):
+        super().__init__()
         self._instr = usbtmc.Instrument(*device_id)
+        self._instr.timeout = 60 * 1000
         device = self._instr.ask("*IDN?").split(',')
         self._vna_manufacturer, self._model_nr, self._serial_no, self._version = device
 
@@ -60,6 +61,22 @@ class E5071B(Device):
             raise ValueError('{0} is not a valid format.'.format(value))
 
     @property
+    def sweep_points(self):
+        return int(self._instr.ask(':SENS1:SWE:POIN?'))
+
+    @sweep_points.setter
+    def sweep_points(self, value):
+        self._instr.write(':SENS1:SWE:POIN {0}'.format(value))
+
+    @property
+    def sweep_bandwidth(self):
+        return int(self._instr.ask(':SENS1:BAND?'))
+
+    @sweep_bandwidth.setter
+    def sweep_bandwidth(self, value):
+        self._instr.write(':SENS1:BAND {0}'.format(value))
+
+    @property
     def display_format(self):
         return self._instr.ask(':CALC1:FORM?')
 
@@ -90,7 +107,7 @@ class E5071B(Device):
         else:
             raise ValueError('{0} is not a valid method.'.format(value[0]))
 
-    def calibrate(self, method, port = None):
+    def calibrate(self, method, port=None):
         if method in ['OPEN', 'SHORT', 'LOAD'] and self.mode == 'S11':
             self._instr.write(':SENS1:CORR:COLL:{0} {1}'.format(method, port))
             self._instr.ask('*OPC?')
