@@ -14,7 +14,7 @@ if os.path.exists('/dev/tty.usbmodem456031'):
 elif os.path.exists('/dev/ttyACM0'):
     psu_gain_serial = '/dev/ttyACM0'
 else:
-    sys.exit('Can\'t find PSU')
+    sys.exit('Can\'t find PSU.')
 
 vna_id_tuple = (2391, 1289)
 
@@ -30,10 +30,10 @@ cur_limit = 1e-3 # Ampere
 
 freq_sweep_range = (3e5, 5e7) # Hz
 output_power = -50 # dBm
-sweep_points = 0.2e3 # Points
-sweep_bandwidth = 10e3 # Hz
+sweep_points = 2e5 # Points
+sweep_bandwidth = 1e2 # Hz
 
-output_directory = 'vga_2016-12-22_50dBm_LNA_20dB_3'
+output_directory = 'vga_lna_2016-12-22_50dBm_20dB_HI_rez'
 
 if not os.path.exists(output_directory):
     os.makedirs(output_directory)
@@ -41,7 +41,7 @@ print('Output dir exists.')
 
 # Connect to PSU
 psu_gain = PL303.PL303(psu_gain_serial, psu_gain_serial_no)
-print('Connected to Gain PSU')
+print('Connected to Gain PSU.')
 
 # Connect to VNA
 vna = E5071B.E5071B(vna_id_tuple, vna_serial_no)
@@ -79,7 +79,7 @@ try:
         print('-' * term_columns)
 
         _in = input('Calibrate? y/n')
-        if _in == 'y':
+        if _in == 'y' or _in == '':
             print('Calibrating VNA.')
             # calibrate reflection
             print('Calibrating open.')
@@ -115,7 +115,7 @@ try:
             print('Calibrating short done.')
 
         _in = input('Measuring reflection? y/n')
-        if _in == 'y':
+        if _in == 'y' or _in == '':
             _in = input('Connect device for reflection test to Port 1 and terminate it with 50 Ohms. Then hit Enter.')
             vna.load_calibration(calibration_s11)
             vna.output_power = output_power
@@ -132,7 +132,7 @@ try:
                 np.savetxt('{0}/reading_reflection_{1:.2f}.csv'.format(output_directory, V), data, delimiter=',')
 
         _in = input('Measuring transmission? y/n')
-        if _in == 'y':
+        if _in == 'y' or _in == '':
             _in = input('Connect device for through test to Port 1 and 2. Then hit Enter.')
             # Load calibration s21
             vna.load_calibration(calibration_s21)
@@ -161,5 +161,6 @@ except KeyboardInterrupt:
     print('Exiting program.')
 finally:
     psu_gain.output = False
+    psu_gain.close()
+    vna.close()
     print('Program has shutdown.')
-    # TODO: close VNA

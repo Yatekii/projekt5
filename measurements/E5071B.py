@@ -21,6 +21,9 @@ class E5071B(Device):
             print(self._model_nr, self._serial_no)
             self.valid = self._model_nr == self.device_name and self._serial_no == serial_no
 
+    def close(self):
+        self._instr.close()
+
     @property
     def frequency_range(self):
         return (
