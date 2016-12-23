@@ -1,0 +1,18 @@
+filter:
+  - Frequenzgang
+    - 300kHz - 50MHz
+    - 300kHz - 9GHz
+  - Rauschflur messen
+  - 3dB Grenzfrequenz bestimmen
+
+vga:
+lna:
+  - S11, S21
+
+adc:
+  - read samples
+    - compare with oscilloscope
+
+system:
+  - rauschmessung
+  - intermodulation, 1dB kompressionspunkt
