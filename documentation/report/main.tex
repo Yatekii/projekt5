@@ -5,7 +5,10 @@
 \usepackage{tikz}
 \usepackage{amsmath}
 \usetikzlibrary{arrows}
-\usepackage{lmodern}      % Type1-Schriftart f�r nicht-englische Texte 
+\usepackage{lmodern}      % Type1-Schriftart f�r nicht-englische Texte
+\usepackage{float}
+\usetikzlibrary{shapes}
+\usetikzlibrary{intersections}
 
 %%% Harvard-Style Bibliographie
 %\usepackage{natbib}
@@ -63,26 +66,37 @@ Studiengang: \> Elektro- und Informationstechnik
 \newpage
 
 \section{Motivation}
+\label{sec:motivation}
 \input{sections/motivation}
 
 \newpage
 
 \section{Theorie}
+\label{sec:sdr}
 \input{sections/sdr}
 
 \newpage
 
+\section{Ausgangslage}
+\label{sec:ausgangslage}
+\input{sections/ausgangslage}
+
+\newpage
+
 \section{Design des Analogen Frontends}
+\label{sec:afe}
 \input{sections/afe}
 
 \newpage
 
 \section{Messungen}
+\label{sec:messungen}
 \input{sections/messungen}
 
 \newpage
 
 \section{Resultate}
+\label{sec:resultate}
 \input{sections/resultate}
 
 \bibliography{example,IEEEabrv}

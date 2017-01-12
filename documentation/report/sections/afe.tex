@@ -1,2 +1,88 @@
 % NOAH
 
+Die Rahmenbedingungen für das Analoge Frontend (AFE) waren durch die Vorgängerarbeit bereits gegeben. Diese sind in \ref{sec:ausgangslage} bereits erläutert.
+
+\subsection{Verifikation der Schaltung}
+
+Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal abtastet. Diese Kette ist in Abbildung \ref{fig:chain} zu sehen.
+
+\begin{figure}[h]
+    \begin{center}
+        \begin{tikzpicture}[scale=0.5]
+
+            \path[name path=lineA] (0, 2) node{}
+            -- (34, 2) node{};
+
+            \path[name path=lineB] (0, 4) node{}
+            -- (34, 4) node{};
+
+            \draw[name path=lna] (0,0) node[anchor=north]{$A$}
+            -- (0,6) node[anchor=north]{$C$}
+            -- (6,3) node[anchor=south]{$B$}
+            -- cycle;
+
+            \node at (3, 3) {LNA +13dB};
+
+            \draw[name path=attenuator] (7, 0) node[anchor=north]{$A$}
+            -- (7, 6) node[anchor=north]{$C$}
+            -- (17, 6) node[anchor=south]{$B$}
+            -- (17, 0) node[anchor=south]{$B$}
+            -- cycle;
+
+            \draw[name path=fga] (18,0) node[anchor=north]{$A$}
+            -- (18,6) node[anchor=north]{$C$}
+            -- (24,3) node[anchor=south]{$B$}
+            -- cycle;
+
+            \draw[name path=vga] (25,0) node[anchor=north]{$A$}
+            -- (25,6) node[anchor=north]{$C$}
+            -- (31,3) node[anchor=south]{$B$}
+            -- cycle;
+
+            \draw[name intersections = {of = lna and lineA}, red, thick] (intersection-1) -- (intersection-2);
+
+            \draw (0, 4) node{}
+            -- (34, 4) node{};
+        \end{tikzpicture}
+    \end{center}
+\label{fig:chain}
+\end{figure}
+
+Diese Anordnung wurde so im Vorgängerprojekt gewählt um eine gewünschte verstellbare Verstärkung von 24 - 84 dB zu erhalten.
+Da aber nicht alles so reibungslos funktionierte wie gewünscht, wurden alle Komponenten noch einmal sogrfältig durchgegangen und eine Leiterplatte gefertigt, welche die Komponenten einzeln aufbaut und die Möglichkeit hat diese so einzeln auszumessen.
+
+\subsubsection{AD8331}
+
+Der AD8331 ist ein Vorverstärker, der fixe Verstärkerstufen im Innern hat und dazu ein Dämpfungsglied, welches so eine verstellbare Verstärkung ermöglicht. Ausserdem kann wahlweise eine von zwei fixen Verstärkungen zugeschaltet werden. Dieser Aufbau ist in Grafik \ref{fig:AD8331} dargestellt.
+
+Der erste Verstärker erwartet ein single-ended Signal am Eingang verstärkt es um 19 dB, versieht es mit einem Bias und gibt ein differentielles Signal zurück. Nach dieser Stufe sind alle Signale differentiell.
+Diese Stufe muss dann extern zum Dämpfungsglied geschaltet werden. Es wäre gut möglich hier noch extern ein Filter zuzuschalten. In dieser Anwendung wurden einfach 100n Kondensatoren dazwischen geschaltet um noch einmal DC zu blocken.
+Die Dämpfung des Dämpfungsgliedes ist stufenlos von 0 bis 48 dB übder den GAIN-Pin verstellbar. Hierfür wurde ein einfacher DAC verwendet. Dazu in Abschnitt \ref{sec:dac} mehr.
+Zuletzt wird ein Nachverstärker zugeschaltet der noch einmal 3.5 oder 15.5 dB verstärkt. Dies kann über den HILO-Pin gesteuert werden.
+Ausserdem kann die Ausgangsspannung auf ein Maximum begrenzt werden, was nützlich ist um weitere Bauteile durch Überspannung zu schützen.
+
+Der Ad8331 operiert bei 5V.
+
+Die totale Verstärkung kann einfach mit den Formeln in \ref{eq:A8331_LO} und \ref{eq:A8331_HI} erhalten werden.
+
+\begin{equation}
+    G_{dB} = 50 \frac{dB}{V} \cdot V_{GAIN} - 6.5 dB, HILO = LO
+\label{eq:A8331_LO}
+\end{equation}
+
+\begin{equation}
+    G_{dB} = 50 \frac{dB}{V} \cdot V_{GAIN} - 6.5 dB, HILO = HI
+\label{eq:A8331_HI}
+\end{equation}
+
+\subsubsection{ISL55210}
+Der ISL55210 ist ein Differentieller Verstärker. Er wird normal mit Feedbackwiderständen beschaltet, so dass man die gewünschte Verstärkung von 28.5 dB erhält.
+Er hat ein GBWP von 4 Ghz was für das geplante SDR alleweil reicht, da das SDR nur bis 30 Mhz operieren soll. Bei einer Verstärkung von 28.5 dB ist das GBWP also noch lange nicht ausgereizt.
+Dieser Verstärker operiert bei 3.3 Volt. Es ist also notwendig eine 5V und 3V3 Stromversorgung zu haben.
+
+\subsubsection{LTC2252}
+Es wurde der LTC2252 mit 12 Bit als A/D-Wandler gewählt. Es ist zu evaluieren ob so eine hohe Auflösung überhaupt notwendig ist.
+Mit 105 MS/s ist er sicher genug schnell um Aliasing zu verhinden, wenn man annimmt dass bei einer Cutoffrequenz von 30 MHz das Filter fünfter Ordnung bei 50 Mhz um etwa 20dB gedämpft wird. TODO: noch fehlerhaft (was hat das filter für eine ordnung??)
+Die Beschaltung wurde aus dem Application Note übernommen. Hier wurde viel Augenmerk darauf gelegt die Anweisungen im Application Note akribisch zu befolgen. Dies war dann insbesondere im Leiterplattendesign wichtig.
+
+\subsection{Leiterplattendesign}
