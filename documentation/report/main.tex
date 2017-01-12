@@ -1,0 +1,91 @@
+\documentclass{fhnwreport} %
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{arrows}
+\usepackage{lmodern}      % Type1-Schriftart f�r nicht-englische Texte 
+
+%%% Harvard-Style Bibliographie
+%\usepackage{natbib}
+%\bibliographystyle{agsm}
+
+%%% IEEE-Style Bibliographie
+\bibliographystyle{IEEEtran}
+
+%% Und wenn die Bibliographie im Inhaltsverzeichnis sein soll:
+\usepackage[nottoc]{tocbibind}
+
+
+\title{%
+  Projekt 5\\[2ex]
+  Software Defined Radio}
+\author{%
+  Noah Hüsser und Francesco Rovelli}
+
+\begin{document}
+
+% Titel
+\maketitle
+
+\vfill
+
+% Titelbild
+% (kann man nat�rlich auch mit Includegraphics machen)
+\begin{minipage}{\textwidth}
+\begin{center}
+\vspace*{5ex}
+    \includegraphics[height=0.4\textwidth]{data/images/title.png}
+\end{center}
+\end{minipage}
+
+\vfill
+
+\begin{tabbing}
+Auftraggeber: \hspace{2em} \=  Dr. Markus Hufschmid \\[2ex]
+Betreuer:  \>  Dr. Markus Hufschmid \\[2ex]
+Experte:  \>  Dr. Markus Hufschmid \\[2ex]
+Team:  \> Noah Hüsser \\ 
+\> Francesco Rovelli \\[2ex]
+Studiengang: \> Elektro- und Informationstechnik
+\end{tabbing}
+
+
+\hbox{}
+
+\clearpage
+
+\abstract{KEKEKEKEKEKEKEKEEKEK}
+\clearpage
+
+\tableofcontents
+\newpage
+
+\section{Motivation}
+\input{sections/motivation}
+
+\newpage
+
+\section{Theorie}
+\input{sections/sdr}
+
+\newpage
+
+\section{Design des Analogen Frontends}
+\input{sections/afe}
+
+\newpage
+
+\section{Messungen}
+\input{sections/messungen}
+
+\newpage
+
+\section{Resultate}
+\input{sections/resultate}
+
+\bibliography{example,IEEEabrv}
+
+\end{document}
+
