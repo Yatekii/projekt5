@@ -8,44 +8,123 @@ Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal ab
 
 \begin{figure}[h]
     \begin{center}
-        \begin{tikzpicture}[scale=0.5]
 
-            \path[name path=lineA] (0, 2) node{}
-            -- (34, 2) node{};
+        \tikzset{font={\fontsize{8pt}{12}\selectfont}}
+        \begin{tikzpicture}[x=0.021\linewidth,y=0.021\linewidth]
 
-            \path[name path=lineB] (0, 4) node{}
-            -- (34, 4) node{};
+            % AD8331
 
-            \draw[name path=lna] (0,0) node[anchor=north]{$A$}
-            -- (0,6) node[anchor=north]{$C$}
-            -- (6,3) node[anchor=south]{$B$}
+            \draw[name path=lna] (0,0) node{}
+            -- (0,6) node{}
+            -- (6,3) node{}
             -- cycle;
 
-            \node at (3, 3) {LNA +13dB};
+            \node at (2, 3) {13dB};
+            \node at (3, -1) {LNA};
 
-            \draw[name path=attenuator] (7, 0) node[anchor=north]{$A$}
-            -- (7, 6) node[anchor=north]{$C$}
-            -- (17, 6) node[anchor=south]{$B$}
-            -- (17, 0) node[anchor=south]{$B$}
+            \draw[name path=attenuator] (7, 0) node{}
+            -- (7, 6) node{}
+            -- (13, 6) node{}
+            -- (13, 0) node{}
             -- cycle;
 
-            \draw[name path=fga] (18,0) node[anchor=north]{$A$}
-            -- (18,6) node[anchor=north]{$C$}
-            -- (24,3) node[anchor=south]{$B$}
+            \node at (10, 3) {0 to 40 dB};
+            \node at (10, -1) {Attenuator};
+
+            \draw[name path=fga] (14,0) node{}
+            -- (14,6) node{}
+            -- (20,3) node{}
             -- cycle;
 
-            \draw[name path=vga] (25,0) node[anchor=north]{$A$}
-            -- (25,6) node[anchor=north]{$C$}
-            -- (31,3) node[anchor=south]{$B$}
+            \node at (16, 3) {21dB};
+            \node at (17, -1) {FGA};
+
+            \draw[name path=vga] (21,0) node{}
+            -- (21,6) node{}
+            -- (27,3) node{}
             -- cycle;
 
-            \draw[name intersections = {of = lna and lineA}, red, thick] (intersection-1) -- (intersection-2);
+            \node[align=left] at (23, 3) {3.5dB \\ 15.5dB};
+            \node at (24, -1) {VGA};
 
-            \draw (0, 4) node{}
-            -- (34, 4) node{};
+            \draw[name path=AD8331] (-0.5, -2) node{}
+            -- (-0.5, 7) node{}
+            -- (27.5, 7) node{}
+            -- (27.5, -2) node{}
+            -- cycle;
+
+            \node at (1.5, -3) {AD8331};
+
+            % ISL55210
+
+            \draw[name path=pa] (28.5,0) node{}
+            -- (28.5,6) node{}
+            -- (34.5,3) node{}
+            -- cycle;
+
+            \node at (30.5, 3) {28.5dB};
+            \node at (31.5, -1) {PA};
+
+            \draw[name path=ISL55210] (28, -2) node{}
+            -- (28, 7) node{}
+            -- (35, 7) node{}
+            -- (35, -2) node{}
+            -- cycle;
+
+            \node at (30, -3) {ISL55210};
+
+            % LTC2252
+
+            \draw[name path=adc] (36, 0) node{}
+            -- (36, 6) node{}
+            -- (42, 6) node{}
+            -- (42, 0) node{}
+            -- cycle;
+
+            \node[align=center] at (39, 3) {12 bit \\ 105 $\frac{MS}{s}$};
+            \node at (39, -1) {ADC};
+
+            \draw[name path=LTC2252] (35.5, -2) node{}
+            -- (35.5, 7) node{}
+            -- (42.5, 7) node{}
+            -- (42.5, -2) node{}
+            -- cycle;
+
+            \node at (37.5, -3) {LTC2252};
+
+            \path[name path=lineA] (0, 2) coordinate (A1) node{}
+            -- (41, 2) coordinate (A2) node{};
+
+            \path[name path=lineB] (0, 4) coordinate (B1) node{}
+            -- (41, 4) coordinate (B2) node{};
+
+            \path [name intersections={of=lineA and lna, name=CS1}];
+            \path [name intersections={of=lineA and attenuator, name=CS2}];
+            \draw[] (CS1-2) -- (CS2-1);
+            \path [name intersections={of=lineA and fga, name=CS3}];
+            \draw[] (CS2-2) -- (CS3-1);
+            \path [name intersections={of=lineA and vga, name=CS4}];
+            \draw[] (CS3-2) -- (CS4-1);
+            \path [name intersections={of=lineA and pa, name=CS5}];
+            \draw[] (CS4-2) -- (CS5-1);
+            \path [name intersections={of=lineA and adc, name=CS6}];
+            \draw[] (CS5-2) -- (CS6-1);
+
+            \path [name intersections={of=lineB and lna, name=CS1}];
+            \path [name intersections={of=lineB and attenuator, name=CS2}];
+            \draw[] (CS1-2) -- (CS2-1);
+            \path [name intersections={of=lineB and fga, name=CS3}];
+            \draw[] (CS2-2) -- (CS3-1);
+            \path [name intersections={of=lineB and vga, name=CS4}];
+            \draw[] (CS3-2) -- (CS4-1);
+            \path [name intersections={of=lineB and pa, name=CS5}];
+            \draw[] (CS4-2) -- (CS5-1);
+            \path [name intersections={of=lineB and adc, name=CS6}];
+            \draw[] (CS5-2) -- (CS6-1);
         \end{tikzpicture}
     \end{center}
 \label{fig:chain}
+\caption{Blockschaltbild des Analogen Frontends TODO: evtl noch DAC und pins zeichnen}
 \end{figure}
 
 Diese Anordnung wurde so im Vorgängerprojekt gewählt um eine gewünschte verstellbare Verstärkung von 24 - 84 dB zu erhalten.
@@ -108,7 +187,7 @@ Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtige EIgenschaft
 \end{equation}
 
 \subsubsection{LP38798}
-% FRANCESCO
+TODO: FRANCESCO
 
 \subsection{Leiterplattendesign}
 
