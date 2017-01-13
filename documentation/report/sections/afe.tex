@@ -8,7 +8,6 @@ Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal ab
 
 \begin{figure}[h]
     \begin{center}
-
         \tikzset{font={\fontsize{8pt}{12}\selectfont}}
         \begin{tikzpicture}[x=0.021\linewidth,y=0.021\linewidth]
 
@@ -221,6 +220,69 @@ Es ist unter jeden Umständen zu vermeiden den DGND des ADCs an einen digitalen 
 Es wird im Datasheet explizit erwähnt dass der Ground unter und um den Chip aus einer ungestörten Plane besteht. Es sind eher 4-Layer+ empfohlen. Es wurde bei diesem Projekt versucht so gut wie möglich mit 2 Layern auszukommen.
 
 Im LTC2252 Datasheet wird zudem erwähnt, dass digitale und analoge Signale gut getrennt werden müssen. Diese sollten sich unter keinen Umständen in die Quere kommen um parasitäre Koplungseffekte zu vermeiden. Dies macht einem der LTC2252 zum Glück sehr leicht, da die Signale im Pinout schon sinnvoll getrennt angeordnet sind.
+Die Groundplane wurde hier so eingeschnitten, dass digitale Signale nicht über den analogen Bereich zurücklaufen. Dies ist in Grafik \ref{fig:groundplane_bsp} sehr schön zu sehen.
+
+\begin{figure}[h]
+\begin{center}
+    \tikzset{font={\fontsize{48pt}{12}\selectfont}}
+    \begin{tikzpicture}
+        \node[opacity=1]{\includegraphics[trim={14cm 9.3cm 13.7cm 9.7cm},clip,scale=6]{data/images/amplifier-B_Cu}};
+        \node[opacity=0.2]{\includegraphics[trim={14cm 9.3cm 13.7cm 9.7cm},clip,scale=6]{data/images/amplifier-F_Cu}};
+
+        % Analog Area
+
+        \draw[name path=attenuator, fill=, opacity=0.3] (-5.8, -0.5) node{}
+        -- (-5.8, 5.8) node{}
+        -- (5.8, 5.8) node{}
+        -- (5.8, 1.8) node{}
+        -- (5, 1.8) node{}
+        -- (4.5, 1) node{}
+        -- (4.0, 0.6) node{}
+        -- (0.5, 2.3) node{}
+        -- (-2.7, 2.3) node{}
+        -- cycle;
+
+        \node at (0, 4) {Analog};
+
+        % Digital Area
+
+        \draw[name path=attenuator, fill=, opacity=0.3] (-5.8, -1.3) node{}
+        -- (-5.8, -5.8) node{}
+        -- (5.8, -5.8) node{}
+        -- (5.8, 1.3) node{}
+        -- (5.4, 1.3) node{}
+        -- (4.7, 0.2) node{}
+        -- (4.2, 0) node{}
+        -- (0, 1.5) node{}
+        -- (-2.7, 1.5) node{}
+        -- cycle;
+
+        \node at (0, -3) {Digital};
+
+        % ADC
+
+        \draw[name path=attenuator] (-2, 2.2) node{}
+            -- (0.5, 2.2) node{}
+            -- (0.5, -0.3) node{}
+            -- (-2, -0.3) node{}
+            -- cycle;
+
+        \tikzset{font={\fontsize{48pt}{12}\selectfont}}
+        \node at (-0.75, 0.95) {\huge ADC};
+
+        % DAC
+
+        \draw[name path=attenuator] (5.8, -1.5) node{}
+            -- (5, -1.5) node{}
+            -- (5, -5) node{}
+            -- (5.8, -5) node{};
+
+        \node at (5, -3.25) {\huge DAC};
+    \end{tikzpicture}
+    \caption{Groundplane unter dem LTC2252.}
+    \label{fig:groundplane_bsp}
+\end{center}
+\end{figure}
 
 Speziell erwähnt im Datasheet wird vorallem der 100nF Kondensator zwischen REFH und REFL. Er darf sich nicht weiter als 1.5 mm vom Chip weg befinden. Er wird speziell aufgeführt und zum parallelen 2.2uF Kondensator wird gesagt dass dieser weiter weg sein kann, was annehmen lässt dass dies wirklich wichtig ist.
 
