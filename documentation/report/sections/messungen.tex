@@ -128,9 +128,33 @@ Die ersten Messungen sind aus diesem Grunde nicht mehr zu verwenden ausser zur V
 
 \begin{figure}[ht]
 \begin{center}
-    \includegraphics[width=0.9\textwidth]{data/images/messungen/kaputtes_AFE}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/ganzes_AFE}
     \caption{Erste verifikation des A8331.}
     \label{fig:ganzes_AFE}
 \end{center}
 \end{figure}
+
+Die Inputimpedanz des A8331 sieht gut aus wie man Grafik \ref{fig:Z_in_A8331} unschwer schliessen kann.
+
+\begin{figure}[ht]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/input_Z_A8331}
+    \caption{Inputimpedanz des A8331.}
+    \label{fig:Z_in_A8331}
+\end{center}
+\end{figure}
+
+Die Verstärkung sieht sehr gut aus wie Grafik \ref{fig:T_A8331} zeigt. Die Differenz zum soll ist stets kleiner als ein Dezibel. In Anbetracht des Umstandes, dass das Datasheet lediglich variable Verstärkungen auf 0.5 dB genau garantiert, ist weniger als 1 dB Abweichung extrem gut. Zudem muss berücksichtigt werden dass das Datasheet einen Verlust auf der externen Beschaltung von 0.4 dB zwischen den Pins LON und VOL sowie LOP und VOH spezifiziert.
+Somit sieht die Kurve sogar noch viel besser aus.
+Hier ist noch anzumerken, dass die Kurve um den Faktor $\frac{1}{a}$ und einen Faktor 2 korrigiert wurde. Der Faktor kommt daher dass das differentielle Signal nur die halbe Signalamplitude hat. 
+
+\begin{figure}[ht]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/vga_2016-12-22_30dBm_transmission2}
+    \caption{Verstärkung des A8331 gemittelt über einen 50 MHz Sweep. Ist und Soll gegenübergestellt. Zudem die Differenz zu jedem Wert.}
+    \label{fig:T_A8331}
+\end{center}
+\end{figure}
+
+Bei allen Messungen mit dem zweiten PCB wurde der DAC nicht verbaut. Dies, da wir den verdacht haben, dass dieser viel Rauschen mit sich bringt. Er wurde durch eine externe Spannungsversorgung ersetzt. In weiteren Versuchen soll dieser natürlich noch genau evaluiert werden.
 
