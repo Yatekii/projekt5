@@ -36,9 +36,9 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
 \begin{figure}[ht]
 \begin{center}
     \begin{circuitikz}
-        \draw[dashed] (-1, 0) 
-        node[tground]{}
-        to[V,v=$U_q$] (-1,2)
+        \draw[dotted] (-1, 0) 
+        node[rground, rotate=-90]{}
+        to[V,v=$U_q$, *-] (-1,2)
         to[short] (1,2);
 
         \draw (1,2)
@@ -49,19 +49,19 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
         node[ocirc]{};
 
         \draw (5,2)
-        to[R=$28\Omega$] (5,0)
-        node[tground]{};
+        to[R,l_=$28\Omega$, *-*] (5,0)
+        node[rground, rotate=-90]{};
 
-        \draw[dashed] (6, 2)
+        \draw[dotted] (6, 2)
         to[short] (7, 2)
         to[R=$50\Omega$] (9,2)
         to[short] (9, 0)
-        node[tground]{};
+        node[rground]{};
 
         % Lower side
 
-        \draw[dashed] (-1, 0)
-        to [V,v=$U_q$] (-1,-2)
+        \draw[dotted] (-1, 0)
+        to [V,v_=$U_q$] (-1,-2)
         to[short] (1,-2);
 
         \draw (1,-2)
@@ -78,7 +78,7 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
         to[short] (1, -4)
         to[short] (-2, -4);
 
-        \draw (-1, 4.5) node{DUT};
+        \draw (-1, -3) node{DUT};
         \draw[->] (-1, 3) -- (0.5, 3) node [pos=0.66,above,align=center]{$250\Omega$};
 
         \draw[dashed] (10, 4)
@@ -86,11 +86,11 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
         to[short] (6, -4)
         to[short] (10, -4);
 
-        \draw (9, 4.5) node{VNA};
+        \draw (9, -3) node{VNA};
         \draw[->] (9, 3) -- (7.5, 3) node [pos=0.66,above,align=center]{$50\Omega$};
 
     \end{circuitikz}
-    \caption{Terminierung des AD8331 zur Messung mit single-ended Geräten die 50 Ohm-Terminierung haben.}
+    \caption{Terminierung des AD8331 zur Messung mit single-ended Geräten die 50 Ohm-Terminierung haben. TODO:}
     \label{fig:terminator}
 \end{center}
 \end{figure}
@@ -112,4 +112,25 @@ Dieser Wert hat noch einen kleinen Fehler, da Widerstände nur endlich genau sin
     \Delta a = \frac{R_s - R_L}{-2R_S\sqrt{R_S(R_S - 2R_L)}} = 0.0021, R_L = 50±1, R_S = 250±1
     \label{eq:a_AD8331}
 \end{equation}
+
+Mit korrekter Korrektur des gemessenen Wertes wurde nun je eine kleine Messreihe durchgeführt. Diese ist in Grafik \ref{kaputtes_AFE} zu sehen. Wie man hier unleicht erkennen kann gibt es einen signifikanten Unterschied je nach Terminierung.
+Leider kann man hier auch erkennen dass der HI/LO Pin keinerlei Einfluss auf die Verstärkung hat. Während dies bei ersten Messungen noch funktionierte, ist dies bei diesen Messungen nicht mehr funktional. Es scheint als wäre es ein Defekt an der Hardware.
+
+\begin{figure}[ht]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/kaputtes_AFE}
+    \caption{Erste Messungen des kaputten A8331.}
+    \label{fig:kaputtes_AFE}
+\end{center}
+\end{figure}
+
+Die ersten Messungen sind aus diesem Grunde nicht mehr zu verwenden ausser zur Verifikation genereller Funktionalität. Ein zweites PCB wurde aus diesem Grund bestückt und vermessen. Dieses hat keine erkennbaren Defekte und liefert anständige erste Ergebnisse wie in \ref{ganzes_AFE} ersichtlich. Diese sind im Folgenden dokumentiert.
+
+\begin{figure}[ht]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/kaputtes_AFE}
+    \caption{Erste verifikation des A8331.}
+    \label{fig:ganzes_AFE}
+\end{center}
+\end{figure}
 
