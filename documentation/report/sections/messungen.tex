@@ -31,13 +31,14 @@ Dort sieht man gut, dass der Input ziemlich rauscht. Deswegen haben wir versucht
 
 Bei diesen Messungen war jedoch das DUT nicht korrekt terminiert. Dies war einer der Knackpunkte zum Anfang. Es war uns bekannt, dass Dinge in diesem Gebiet korrekt terminiert werden müssen. Wenn das DUT nicht korrekt belastet wird können ungewollte Effekte auftreten. Deswegen sind diese ersten Messungen mit Vorsicht zu geniessen und dürfen nur als Anhaltspunkt und nicht als exakte Messung genommen werden.
 
-Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended Signal, wie im Abschnitt \ref{Leiterplattendesign} beschrieben, Baluns vorgesehen. Diese sind jedoch relativ schwer zu kriegen und sind dann relativ teuer. Deswegen wurde eine günstigere Lösung gesucht. Diese wurde in der Schaltung dargestellt in \ref{fig:terminator} gefunden.
+Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended Signal, wie im Abschnitt \ref{Leiterplattendesign} beschrieben, Baluns vorgesehen. Diese sind jedoch relativ schwer zu kriegen und sind dann relativ teuer. Deswegen wurde eine günstigere Lösung gesucht. Diese wurde in der in \ref{fig:terminator} dargestellten Schaltung gefunden.
 
 \begin{figure}[ht]
 \begin{center}
     \begin{circuitikz}
-        \draw[dashed] node[tground]{}
-        to[V,v=$U_q$] (0,2)
+        \draw[dashed] (-1, 0) 
+        node[tground]{}
+        to[V,v=$U_q$] (-1,2)
         to[short] (1,2);
 
         \draw (1,2)
@@ -53,14 +54,14 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
 
         \draw[dashed] (6, 2)
         to[short] (7, 2)
-        to[R=$25\Omega$] (9,2)
+        to[R=$50\Omega$] (9,2)
         to[short] (9, 0)
         node[tground]{};
 
         % Lower side
 
-        \draw[dashed] (0, 0)
-        to [V,v=$U_q$] (0,-2)
+        \draw[dashed] (-1, 0)
+        to [V,v=$U_q$] (-1,-2)
         to[short] (1,-2);
 
         \draw (1,-2)
@@ -70,18 +71,45 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
         to[short] (5, -2)
         to[short] (5, 0);
 
-        \draw[dashed] (-1, 4)
+        % Boxes
+
+        \draw[dashed] (-2, 4)
         to[short] (1, 4)
         to[short] (1, -4)
-        to[short] (-1, -4);
+        to[short] (-2, -4);
 
-        \draw[dashed] (12, 4)
+        \draw (-1, 4.5) node{DUT};
+        \draw[->] (-1, 3) -- (0.5, 3) node [pos=0.66,above,align=center]{$250\Omega$};
+
+        \draw[dashed] (10, 4)
         to[short] (6, 4)
         to[short] (6, -4)
-        to[short] (12, -4);
+        to[short] (10, -4);
+
+        \draw (9, 4.5) node{VNA};
+        \draw[->] (9, 3) -- (7.5, 3) node [pos=0.66,above,align=center]{$50\Omega$};
 
     \end{circuitikz}
     \caption{Terminierung des AD8331 zur Messung mit single-ended Geräten die 50 Ohm-Terminierung haben.}
     \label{fig:terminator}
 \end{center}
 \end{figure}
+
+Damit sieht der AD8331 die gewünschten 250 Ohm auf beiden Ausgängen des differentiellen Signales. Zugleich sieht der VNA dabei seine gewünschten 50 Ohm.
+Diese Lösung eliminiert profitiert zwar nicht von der Störungseliminierung eines differentiellen Signales, ist jedeoch für den Rahmen dieses Projektes mehr als ausreichend.
+
+Was jetzt noch beachtet werden muss ist der Spannungsteiler der durch diese Schaltung am Ausgang vorgeschaltet wird.
+So müssen Messresultate jeweils mit $\frac{1}{a}$ multipliziert werden wobei $a$ in Gleichung \ref{eq:a_AD8331} gegeben ist.
+
+\begin{equation}
+    a = \frac{R_L}{R_S + \sqrt{R_S(R_S - 2R_L)})} = 0.1127, R_L =50, R_S = 250
+    \label{eq:a_AD8331}
+\end{equation}
+
+Dieser Wert hat noch einen kleinen Fehler, da Widerstände nur endlich genau sind. In der Fehlerrechnung \ref{eq:fehler_a_AD8331} wurde ein Fehler von ±1 für $R_S$ und $R_L$ angenommen. Dies ergibt einen Relativen Fehler von 1.86\% was akzeptabel erscheint.
+
+\begin{equation}
+    \Delta a = \frac{R_s - R_L}{-2R_S\sqrt{R_S(R_S - 2R_L)}} = 0.0021, R_L = 50±1, R_S = 250±1
+    \label{eq:a_AD8331}
+\end{equation}
+
