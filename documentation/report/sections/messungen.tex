@@ -2,13 +2,33 @@
 
 Hauptziel der Arbeit war es die Komponenten gut zu vermessen und ihre Leistung zu verifizieren.
 
-\subsubsection*{Setup}
-TODO:
+\subsection{Setup \& Software}
+Zum Messen wurden verschiedenste Gerätschaften verwendet. Manche wurden per Skript angesteuert zur Automatisierung der Messungen. Alle Geräte sind im Folgenden kurz erwähnt und beschrieben, da die Ansteuerung direkt mit deren Funktionsumfang zusammenhängt.
 
-\subsubsection*{Software}
-TODO:
+\subsubsection*{Hauptlabornetzgerät TODO: Name}
+Das XXXX ist ein normales Labornetzgerät welches sich leider nicht fernsteuern lässt. Es speist bei den Versuchen lediglich das AFE mit 5V und übernimmt keine weitere Funktion. Es taugt für diese Funktion gut.
 
-\subsubsection*{Erste Messungen}
+\subsubsection*{Oszilloskop Agilent TODO: name}
+Das Oszilloskop ist hier um die Geschehnisse mit den Signalen zu beobachten. Für genaue Messungen der Verstärkung und Eingangsimpedanz der Schaltung wird zwar ein VNA verwendet, jedoch misst dieser immer nur einen RMS-Wert. Um genaue Signalverläufe zu beobachen und zum Beispiel zu ermitteln ob der Sinus vom Eingang am Ausgang überhaupt noch ein Sinus ist, wird das Oszilloskop verwendet. Es wird bei Bedarf per Hand bedient und wurde nicht per Skript angesteuert.
+
+\subsubsection*{Arduino Due}
+Da zur Ansteuerung des verwendeten DACs $I^2C$ verwendet wird, war eine Schnittstelle die $I^2C$ spricht unabdingbar. Statt bereits VHDL für das FPGA zu schreiben und eine weitere Baustelle anzufagen wurde ein Arduino verwendet. Es ist relativ einfach diesen dazu zu bringen $I^2C$ zu sprechen. Die Spannung des DACs kann somit vor der Messung eingestellt werden und danach kann ungestört gemessen werden, ohne dass der Bus dazwischenplappert und die Messungen verfälscht. Das ganze kann vom PC aus per UART gesteuert werden.
+Leider wurde nach ersten Versuchen die Vermutung angestellt dass der DAC zusätzliches Rauschen mit sich bringt, weswegen im weiteren Verlauf der Messungen mit einem präzisen Labornetzgerät agiert wurde.
+
+\subsubsection*{Kleine PSU TODO: Name}
+Dieses Labornetzgerät kann per PC angesteuert werden. Was hier wichtig war ist das das Netzgerät Spannungen auf Milivolt genau einstellen kann.
+Das Ansteuern per PC geschieht über das Netzwerk oder UART. Das Gerät wird über beide Schnittstellen mit LXI angesteuert. LXI ist ein textbasiertes Protokoll und damit menschenleserlich und einfach zu implementieren. Es wurde UART gewählt, da es per Netzwerk Probleme mit der Firewall gab. Dies ist möglich obwohl LXI eigentlich für LAN gedacht ist.
+
+Zur Ansteuerung wurden einfache Python-Klassen geschrieben, welche die Parameter der Messgeräte lesen und setzen können. Das Python-Objekt hat dabei keinerlei Zustand. Jegliche Zustände werden auf dem Gerät selber verwaltet. Somit können auch jederzeit am Gerät selber Einstellungen vorgenommen werden und das Python-Interface kriegt diese ohne Schwierigkeiten mit und stellt diese angenehm über Variabeln zur Verfügung.
+
+\subsubsection*{VNA TODO: Name}
+Der Vector Network Analyzer (VNA) wird dazu verwendet ein Signal mit bekanntem Pegel und Frequenz in ein Zeitor (Mehrtor ist auch möglich aber in diesem Falle nicht gewünscht) zu geben und am Eingang, sowie am Ausgang zu messen wieviel von dem Signal noch übrig ist. So kann leicht das ganze System vermessen werden. Was der VNA genau macht ist hier(TODO: doc suchen kek) gut beschrieben.
+
+Zum Glück konnte für die Messungen ein sehr gutes Gerät von HP verwendet werden. Es hat ein sehr einfaches Benutzerinterface und lässt sich zudem per PC ansteuern. Hier gibt es mehrere Varianten wie dies geschehen kann, es wurde jedoch wieder UART und LXI gewählt. Somit gab es nicht viel umzustellen um auch den VNA anzusprechen. Natürlich wurden nur Python-Schnittstellen für die Funktionen, welche auch verwendet wurden, implementiert um nicht den Zeitrahmen zu sprengen.
+
+Das verwendete Gerät kann von 300kHz bis TODO: GHz messen und ist daher bestens geeignet. Zudem hat es eine Toleranz bis 10 VDC am Messeingang, was perfekt ist falls man bei ersten Experimenten mal einen Fehler macht. Leider hat der VNA als Untergenze -55dBm was er an Signal erzeugen kann. Deswegen wurde für Messungen mit der kompletten Verstärkerstufe ein -20dB Dämpfungsglied verwendet, welches das Signal noch einmal verkleinert. Für die Impedanzausmessung des AD8331 wurde auf das Dämpfungsglied verzichtet, da dies natürlich in komplett falschen Messresultaten endet.
+
+\subsection{Erste Messungen}
 
 Mit einer ersten bestückten Leiterplatte wurden daher mit dem Oszilloskop erste Messungten durchgeführt, welche eine generelle Funktionstüchtigkeit bezeugten, welche aber gar nicht zufriedenstellend war.
 
@@ -94,7 +114,7 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
         \draw[->] (9, 3) -- (7.5, 3) node [pos=0.66,above,align=center]{$50\Omega$};
 
     \end{circuitikz}
-    \caption{Terminierung des AD8331 zur Messung mit single-ended Geräten die 50 Ohm-Terminierung haben. TODO:}
+    \caption{Terminierung des AD8331 zur Messung mit single-ended Geräten die 50 Ohm-Terminierung haben.}
     \label{fig:terminator}
 \end{center}
 \end{figure}
@@ -162,7 +182,7 @@ Hier ist noch anzumerken, dass die Kurve um den Faktor $\frac{1}{a}$ und einen F
 
 Bei allen Messungen mit dem zweiten PCB ist der DAC nicht verbaut. Dies, da der Verdacht bestand, dass dieser viel Rauschen mit sich bringt, was nach der Erkenntniss dass der AD8331 auf dem ersten Board tatsächlich kaputt ist nicht mehr so wahrscheinlich ist. Er wurde durch eine externe Spannungsversorgung ersetzt. In weiteren Versuchen soll dieser natürlich noch genau evaluiert werden.
 
-\subsubsection*{ISL55210}
+\subsection{ISL55210}
 
 Da die Messungen so gut herauskamen wurde angenommen dass somit der AD8331 als Input für weitere Messungen am ISL55210 verwendet werden kann, um weiterhin auf einen Balun verzichten zu können. Mit einem twisted Pair wurden die beiden Stufen also verbunden. so kann zwar die Inputimpedanz des ISL55210 zwar nicht mehr gemessen werden, hier reichte die Transmission jedoch völlig.
 
