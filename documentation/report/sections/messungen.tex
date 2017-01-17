@@ -35,7 +35,7 @@ Dort sieht man gut, dass der Input ziemlich rauscht. Deswegen haben wir versucht
 
 Bei diesen Messungen war jedoch das DUT nicht korrekt terminiert. Dies war einer der Knackpunkte zum Anfang. Es war uns bekannt, dass Dinge in diesem Gebiet korrekt terminiert werden müssen. Wenn das DUT nicht korrekt belastet wird können ungewollte Effekte auftreten. Deswegen sind diese ersten Messungen mit Vorsicht zu geniessen und dürfen nur als Anhaltspunkt und nicht als exakte Messung genommen werden.
 
-Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended Signal, wie im Abschnitt \ref{Leiterplattendesign} beschrieben, Baluns vorgesehen. Diese sind jedoch relativ schwer zu kriegen und sind dann relativ teuer. Deswegen wurde eine günstigere Lösung gesucht. Diese wurde in der in \ref{fig:terminator} dargestellten Schaltung gefunden.
+Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended Signal, wie im Abschnitt \ref{subsec:Leiterplattendesign} beschrieben, Baluns vorgesehen. Diese sind jedoch relativ schwer zu kriegen und sind dann relativ teuer. Deswegen wurde eine günstigere Lösung gesucht. Diese wurde in der in \ref{fig:terminator} dargestellten Schaltung gefunden.
 
 \begin{figure}[H]
 \begin{center}
@@ -114,10 +114,10 @@ Dieser Wert hat noch einen kleinen Fehler, da Widerstände nur endlich genau sin
 
 \begin{equation}
     \Delta a = \frac{R_s - R_L}{-2R_S\sqrt{R_S(R_S - 2R_L)}} = 0.0021, R_L = 50±1, R_S = 250±1
-    \label{eq:a_AD8331}
+    \label{eq:fehler_a_AD8331}
 \end{equation}
 
-Mit korrekter Korrektur des gemessenen Wertes wurde nun je eine kleine Messreihe durchgeführt. Diese ist in Grafik \ref{kaputtes_AFE} zu sehen. Wie man hier unleicht erkennen kann gibt es einen signifikanten Unterschied je nach Terminierung.
+Mit korrekter Korrektur des gemessenen Wertes wurde nun je eine kleine Messreihe durchgeführt. Diese ist in Grafik \ref{fig:kaputtes_AFE} zu sehen. Wie man hier unleicht erkennen kann gibt es einen signifikanten Unterschied je nach Terminierung.
 Leider kann man hier auch erkennen dass der HI/LO Pin keinerlei Einfluss auf die Verstärkung hat. Während dies bei ersten Messungen noch funktionierte, ist dies bei diesen Messungen nicht mehr funktional. Es scheint als wäre es ein Defekt an der Hardware.
 
 \begin{figure}[H]
@@ -128,7 +128,7 @@ Leider kann man hier auch erkennen dass der HI/LO Pin keinerlei Einfluss auf die
 \end{center}
 \end{figure}
 
-Die ersten Messungen sind aus diesem Grunde nicht mehr zu verwenden ausser zur Verifikation genereller Funktionalität. Ein zweites PCB wurde aus diesem Grund bestückt und vermessen. Dieses hat keine erkennbaren Defekte und liefert anständige erste Ergebnisse wie in \ref{ganzes_AFE} ersichtlich. Diese sind im Folgenden dokumentiert.
+Die ersten Messungen sind aus diesem Grunde nicht mehr zu verwenden ausser zur Verifikation genereller Funktionalität. Ein zweites PCB wurde aus diesem Grund bestückt und vermessen. Dieses hat keine erkennbaren Defekte und liefert anständige erste Ergebnisse wie in \ref{fig:ganzes_AFE} ersichtlich. Diese sind im Folgenden dokumentiert.
 
 \begin{figure}[H]
 \begin{center}

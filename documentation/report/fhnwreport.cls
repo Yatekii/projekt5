@@ -55,7 +55,7 @@
         \twocolumn[\@maketitle]%
       \fi
     \else
-      \newpage
+      \clearpage
       \global\@topnum\z@   % Prevents figures from going at top of the title page.
       \@maketitle
     \fi
@@ -75,7 +75,7 @@
   \global\let\and\relax
 }
 \def\@maketitle{%
-  \newpage
+  \clearpage
   \null
   \setlength{\unitlength}{1cm}%
   \begin{picture}(0,0)
