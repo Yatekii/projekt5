@@ -3,12 +3,16 @@
 Hauptziel der Arbeit war es die Komponenten gut zu vermessen und ihre Leistung zu verifizieren.
 
 \subsubsection*{Setup}
+TODO:
+
+\subsubsection*{Software}
+TODO:
 
 \subsubsection*{Erste Messungen}
 
 Mit einer ersten bestückten Leiterplatte wurden daher mit dem Oszilloskop erste Messungten durchgeführt, welche eine generelle Funktionstüchtigkeit bezeugten, welche aber gar nicht zufriedenstellend war.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=0.9\textwidth]{data/images/messungen/erste_messung}
     \caption{Erste Messungen des Gesamtsystems. Inkorrekt terminiert. Mit Oszilloskop gemessen.}
@@ -20,7 +24,7 @@ Diese Kurve sieht wahnsinnig unschön aus. Gerade bei den Peaks gibt es fiese Au
 Auch sieht man hier, dass der dass der Input des Funktionsgenerators ziemlich viel Rauschen hat, welches sich auch in Grafik \ref{fig:messungen_zweite} zeigt.
 Dort sieht man gut, dass der Input ziemlich rauscht. Deswegen haben wir versucht N und P voneinander zu subtrahieren. Und so das Rauschen zu eliminieren. Dies hat sogar relativ gut geklappt. Dies ist natürlich nicht ganz sauber, ging aber für eine erste Verifikation sehr gut.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=0.9\textwidth]{data/images/messungen/zweite_messung_NP}
     \includegraphics[width=0.9\textwidth]{data/images/messungen/zweite_messung_INOUT}
@@ -33,7 +37,7 @@ Bei diesen Messungen war jedoch das DUT nicht korrekt terminiert. Dies war einer
 
 Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended Signal, wie im Abschnitt \ref{Leiterplattendesign} beschrieben, Baluns vorgesehen. Diese sind jedoch relativ schwer zu kriegen und sind dann relativ teuer. Deswegen wurde eine günstigere Lösung gesucht. Diese wurde in der in \ref{fig:terminator} dargestellten Schaltung gefunden.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \begin{circuitikz}
         \draw[dotted] (-1, 0) 
@@ -116,7 +120,7 @@ Dieser Wert hat noch einen kleinen Fehler, da Widerstände nur endlich genau sin
 Mit korrekter Korrektur des gemessenen Wertes wurde nun je eine kleine Messreihe durchgeführt. Diese ist in Grafik \ref{kaputtes_AFE} zu sehen. Wie man hier unleicht erkennen kann gibt es einen signifikanten Unterschied je nach Terminierung.
 Leider kann man hier auch erkennen dass der HI/LO Pin keinerlei Einfluss auf die Verstärkung hat. Während dies bei ersten Messungen noch funktionierte, ist dies bei diesen Messungen nicht mehr funktional. Es scheint als wäre es ein Defekt an der Hardware.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=0.9\textwidth]{data/images/messungen/kaputtes_AFE}
     \caption{Erste Messungen des kaputten A8331.}
@@ -126,7 +130,7 @@ Leider kann man hier auch erkennen dass der HI/LO Pin keinerlei Einfluss auf die
 
 Die ersten Messungen sind aus diesem Grunde nicht mehr zu verwenden ausser zur Verifikation genereller Funktionalität. Ein zweites PCB wurde aus diesem Grund bestückt und vermessen. Dieses hat keine erkennbaren Defekte und liefert anständige erste Ergebnisse wie in \ref{ganzes_AFE} ersichtlich. Diese sind im Folgenden dokumentiert.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=0.9\textwidth]{data/images/messungen/ganzes_AFE}
     \caption{Erste verifikation des A8331.}
@@ -136,7 +140,7 @@ Die ersten Messungen sind aus diesem Grunde nicht mehr zu verwenden ausser zur V
 
 Die Inputimpedanz des A8331 sieht gut aus wie man Grafik \ref{fig:Z_in_A8331} unschwer schliessen kann.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=0.9\textwidth]{data/images/messungen/input_Z_A8331}
     \caption{Inputimpedanz des A8331.}
@@ -148,13 +152,49 @@ Die Verstärkung sieht sehr gut aus wie Grafik \ref{fig:T_A8331} zeigt. Die Diff
 Somit sieht die Kurve sogar noch viel besser aus.
 Hier ist noch anzumerken, dass die Kurve um den Faktor $\frac{1}{a}$ und einen Faktor 2 korrigiert wurde. Der Faktor kommt daher dass das differentielle Signal nur die halbe Signalamplitude hat. 
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=0.9\textwidth]{data/images/messungen/vga_2016-12-22_30dBm_transmission2}
-    \caption{Verstärkung des A8331 gemittelt über einen 50 MHz Sweep. Ist und Soll gegenübergestellt. Zudem die Differenz zu jedem Wert.}
+    \caption{Verstärkung des AD8331 gemittelt über einen 50 MHz Sweep. Ist und Soll gegenübergestellt. Zudem die Differenz zu jedem Wert.}
     \label{fig:T_A8331}
 \end{center}
 \end{figure}
 
 Bei allen Messungen mit dem zweiten PCB ist der DAC nicht verbaut. Dies, da der Verdacht bestand, dass dieser viel Rauschen mit sich bringt, was nach der Erkenntniss dass der AD8331 auf dem ersten Board tatsächlich kaputt ist nicht mehr so wahrscheinlich ist. Er wurde durch eine externe Spannungsversorgung ersetzt. In weiteren Versuchen soll dieser natürlich noch genau evaluiert werden.
 
+\subsubsection*{ISL55210}
+
+Da die Messungen so gut herauskamen wurde angenommen dass somit der AD8331 als Input für weitere Messungen am ISL55210 verwendet werden kann, um weiterhin auf einen Balun verzichten zu können. Mit einem twisted Pair wurden die beiden Stufen also verbunden. so kann zwar die Inputimpedanz des ISL55210 zwar nicht mehr gemessen werden, hier reichte die Transmission jedoch völlig.
+
+Im Plot \ref{fig:T_broken_ISL55210} sieht man das Verhalten des ISL55210. Sehr unschön. Es gibt aber drei interessante Dinge zu sehen.
+Erstens stimmen die gemessenen Verstärkungen über den Frequenzsweep gemittelt gut mit dem Datasheet überein wie man in Grafik \ref{fig:T_broken_mean_ISL55210} sieht.
+
+\begin{figure}[H]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/vga_lna_2016-12-22_50dBm_20dB_transmission3}
+    \caption{Verstärkung des AD8331 und ISL55210 50 MHz Sweep bei 10 verschiedenen Verstärkungen.}
+    \label{fig:T_broken_ISL55210}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/vga_lna_2016-12-22_50dBm_transmission2}
+    \caption{Verstärkung des AD8331 und ISL55210 gemittelt über einen 50 MHz Sweep. Ist und Soll gegenübergestellt. Zudem die Differenz zu jedem Wert.}
+    \label{fig:T_broken_mean_ISL55210}
+\end{center}
+\end{figure}
+
+Dies kann ein Zufall sein. Was aber viel interessanter ist, dass die Kurve zwar sehr komisch ausschaut, aber überhaupt nicht wie jene, welche beim Vorgängerprojekt gemessen wurde, wie man unschwer in Grafik \ref{fig:ganzes_system_vorganger} erkennen kann.
+
+\begin{figure}[H]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/ganzes_system_vorganger}
+    \caption{Verstärkung des AD8331 und ISL55210. Gemessen im Vorgängerprojekt.}
+    \label{fig:ganzes_system_vorganger}
+\end{center}
+\end{figure}
+
+Bei dieser Kurve gibt es einen Unerwarteten Abfall bei 2 MHz abwärts, was in der Vorgängerarbeit auf das aktive Impedanzmatching geschoben wurde. Dieses Verhalten konnte in den gemachten Messungen nicht nachvollzogen werden. Im Gegenteil, es wird ein starker Anstieg gemessen in diesem Bereich.
+
+Ein dritter Punkt ist, dass der Verstärker einen unerwarteten Abfall hat je höher die Frequenz ist. Laut Datasheet sollte der Verstärker locker bis 100MHz um 28 dB verstärken. Die Kurve müsste relativ gerade ausfallen. Erst war der Gedanke da, dass es nur ein Fehle rin diesem Projekt ist. Wie sich aber zeigt bestand dieses Verhalten schon im Vorgängerprojekt, wurde jedoch nicht explizit bemerkt oder wenigstens erwähnt. 
