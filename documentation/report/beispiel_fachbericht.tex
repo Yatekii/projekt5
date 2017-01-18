@@ -1,0 +1,141 @@
+\documentclass{fhnwreport} %
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usetikzlibrary{arrows}
+\usepackage{lmodern}      % Type1-Schriftart für nicht-englische Texte 
+
+%%% Harvard-Style Bibliographie
+%\usepackage{natbib}
+%\bibliographystyle{agsm}
+
+%%% IEEE-Style Bibliographie
+\bibliographystyle{IEEEtran}
+
+%% Und wenn die Bibliographie im Inhaltsverzeichnis sein soll:
+\usepackage[nottoc]{tocbibind}
+
+
+\title{%
+  Bachelor-Thesis\\[2ex]
+  Sehr interessanter Titel}
+\author{%
+  Amalia Jackson und Peter Paul Maryland}
+
+\begin{document}
+
+% Titel
+\maketitle
+
+\vfill
+
+% Titelbild
+% (kann man natürlich auch mit Includegraphics machen)
+\begin{minipage}{\textwidth}
+\begin{center}
+\vspace*{5ex}
+\tikzstyle{int}=[draw, fill=blue!20, minimum size=2em]
+\tikzstyle{init} = [pin edge={to-,thin,black}]
+\begin{tikzpicture}[node distance=2.5cm,auto,>=latex']
+    \node [int, pin={[init]above:$v_0$}] (a) {$\frac{1}{s}$};
+    \node (b) [left of=a,node distance=2cm, coordinate] {a};
+    \node [int, pin={[init]above:$p_0$}] (c) [right of=a] {$\frac{1}{s}$};
+    \node [coordinate] (end) [right of=c, node distance=2cm]{};
+    \path[->] (b) edge node {$a$} (a);
+    \path[->] (a) edge node {$v$} (c);
+    \draw[->] (c) edge node {$p$} (end) ;
+\end{tikzpicture}
+\end{center}
+\end{minipage}
+
+\vfill
+
+\begin{tabbing}
+Auftraggeber: \hspace{2em} \=  Andante AG \\[2ex]
+Betreuer:  \>  Prof. Dr. Roberto Allegro \\[2ex]
+Experte:  \>  Gianni Tenuto \\[2ex]
+Team:  \> Jessica Octava \\ 
+\> Luca dal Segno \\[2ex]
+Studiengang: \> Elektro- und Informationstechnik
+\end{tabbing}
+
+
+\hbox{}
+
+\clearpage
+
+\tableofcontents
+
+\section*{Zum Logo}
+
+Die Sprache des nw-Logos passt sich nicht automatisch der Dokumentensprache an. Bitte ändern Sie einfach den Dateinamen \verb!fhnw_ht_logo_de.pdf! oder  \verb!fhnw_ht_logo_en.pdf! um in \verb!fhnwlogo.pdf!, je nach Bedarf.
+
+\section{Erster Abschnitt}
+
+Sehr interessante Papers: \cite{Mason1953,Mason1956}.
+
+Mit dem verwendeten Natbib können Sie sehr flexibel zitieren; mehr Information dazu in \cite{natbib}.
+
+\section{Zweiter Abschnitt}
+
+Und hier beginnt der Inhalt \ldots
+
+Mit einer Formel \ldots
+
+\begin{align}
+  a_k&=\frac{2}{T}\int_{c}^{c+T} f(t) \cdot \cos(k\omega t)\, \mathrm{d}t \\[.7em]
+  b_k&=\frac{2}{T}\int_{c}^{c+T} f(t) \cdot \sin(k\omega t)\, \mathrm{d}t
+\end{align}
+
+und natürlich auch Tabelle~\ref{tab:test}.
+
+\begin{table}[b]
+\begin{center}
+\begin{tabular}{lrrrrrrr}\hline
+Prim & 2 & 3 & 5 & 7 & 11 & 13 & 17 \\
+Fibonacci & 1 & 2 & 3 & 5 & 8 & 13 & 21 \\\hline
+\end{tabular}
+\end{center}
+\caption{Die ersten Fibonacci- und Primzahlen.}
+\label{tab:test}
+\end{table}
+
+Und etwas sinnloser Text: 
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc auctor sed augue eget eleifend. Maecenas id leo at tortor pharetra fringilla at vel ex. Quisque dictum accumsan ipsum, sit amet lacinia nulla molestie et. Nullam iaculis ipsum ac velit consequat varius. In eget risus et sem tempus tristique. Maecenas interdum felis ac ligula aliquam laoreet. Aenean congue lobortis bibendum. Curabitur rutrum congue porta. Ut ornare tortor id pellentesque vehicula. Suspendisse non est sit amet eros consectetur tempor. Nam et urna leo. Nunc rhoncus lacinia justo ac dapibus. Pellentesque tempor mauris et risus lobortis, ut volutpat lectus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+
+Pellentesque placerat fermentum ligula quis suscipit. Donec non rhoncus ligula. Curabitur diam arcu, porttitor sed quam sit amet, pharetra efficitur augue. Maecenas urna eros, eleifend commodo luctus vitae, malesuada ac mi. Nam a gravida justo. Donec quis pretium ipsum, et sodales risus. Nulla hendrerit sed leo id facilisis. Suspendisse vehicula pharetra vestibulum. Cras magna dolor, tristique eget lacinia vitae, pretium id ligula. Morbi suscipit libero lorem, at bibendum mi aliquam a. Integer odio magna, consectetur a felis in, rhoncus varius erat. Aenean suscipit est vel ligula hendrerit malesuada. Proin faucibus. 
+
+\section{Dritter Abschnitt}
+
+Ein Bild gibt es auch noch, Fig.~\ref{fig:test}.
+
+Und beachten Sie Ligaturen: man schreibt Nachtfischen, aber Straf{}information. Strafinformation ist falsch.  Schauen Sie sich den Unterschied zwischen ,,fi`` und ,,f{}i`` an. 
+  
+
+\begin{figure}
+\rule{1cm}{2mm}
+
+\rule{1cm}{2mm}
+
+\rule{2cm}{2mm}
+
+\rule{3cm}{2mm}
+
+\rule{5cm}{2mm}
+
+\rule{8cm}{2mm}
+
+\rule{13cm}{2mm}
+
+\caption{Striche in der Länge der ersten Fibonacci-Zahlen.}
+\label{fig:test}
+\end{figure}
+
+
+\bibliography{example,IEEEabrv}
+
+\end{document}
+

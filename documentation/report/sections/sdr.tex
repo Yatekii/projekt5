@@ -1,0 +1,73 @@
+% FRANCESCO
+
+\tikzstyle{sdrelement-ext} = [
+rectangle,
+draw,
+text centered,
+minimum height=4em
+]
+
+\tikzstyle{sdrelement-analog} = [
+rectangle,
+draw,
+text centered,
+fill=green!20,
+minimum height=4em
+]
+
+\tikzstyle{sdrelement-digital} = [
+rectangle,
+draw,
+text centered,
+fill=blue!20,
+minimum height=4em
+]
+
+\tikzstyle{sdrelement-hybrid} = [
+rectangle,
+draw,
+text centered,
+left color=green!20,
+right color=blue!20,
+minimum height=4em
+]
+
+
+\tikzstyle{sdrpointer} = [
+draw,
+-latex'
+]
+
+
+Die grundlegende Idee von Software Defined Radios ist die Digitalisierung möglichst vieler Bestandteile von Funkempfängern und Sendern. Verglichen mit herkömmlichen analogen Sendern und Empfängern sind SDR relativ jung da sie erst mit moderner digitaler Schaltungstechnik möglich wurden. Es gibt sie sowohl einzeln als Sender oder Empfänger als auch kombiniert. Dieses Projekt beschränkt sich auf den Empfängerteil, ein Sender wäre mögliche zukünftige Erweiterung.
+
+Mittels des diesem Projekts zugrunde liegenden Software Defined Radios kann der allgemeine Aufbau eines solchen Empfängers veranschaulicht werden.
+
+\begin{tikzpicture}[node distance = 2cm, auto]
+\node [sdrelement-ext] (antenne) {Antenne};
+\node [sdrelement-analog, right of=antenne, node distance=3cm] (afe) {Analoges Frontend};
+\node [sdrelement-hybrid, right of=afe, node distance=4cm] (adc) {Analog-Digital-Konverter};
+\node [sdrelement-digital, below of=antenne, node distance=2cm, xshift=5.5em] (fpga) {Digitale Signalverarbeitung};
+\node [sdrelement-ext, right of=fpga, node distance=5cm] (ui) {Benutzerinterface};
+\path [sdrpointer] (antenne) -- (afe);
+\path [sdrpointer] (afe) -- (adc);
+\path [sdrpointer] (adc) -- (fpga);
+\path [sdrpointer] (fpga) -- (ui);
+\end{tikzpicture}
+
+Die Kette beginnt mit einer Antenne, welche beliebige Signale empfängt. Diese werden in einem ersten Schritt gemäss der Leistungsvermögen der folgenden Elektronik gefiltert und verstärkt. Hierbei geht es insbesondere um das Entfernen von nicht verarbeitbaren Frequenzen und dem Verstärken von relevanten aber sehr schwachen Signalen. Mittels eines schnellen Analog-Digital-Wandler wird das Signal anschliessend abgetastet und an die digitale Signalverarbeitung übergeben. Diese ist typischerweise als FPGA oder mittels spezialisierten Chips realisiert. Aufgrund der parallelisierbarkeit der Prozesse in FPGAs kann eine sehr hohe Datenrate erreicht werden, was für diese Anwendung zwingend ist. Beispiele für hier stattfindende Signalverarbeitung ist die Demodulation von eingehenden Daten und wo möglich die dazugehörige Fehlererkennung. Je nach Anwendungszweck werden die verarbeiteten Daten einem Benutzer direkt angezeigt oder digital abgelegt um von einer Software verwendet zu werden.
+
+Der Fokus dieses Projekts liegt auf dem ersten Teil, dem analogen Frontend. Es ist, einschliesslich des Analog-Digital-Wandlers, wie folgt aufgebaut:
+
+\begin{tikzpicture}[node distance = 2cm, auto]
+	\node [sdrelement-ext] (antenne) {Antenne};
+	\node [sdrelement-analog, right of=antenne, node distance=3cm] (prefilter) {Tiefpassfilter};
+	\node [sdrelement-analog, right of=prefilter, node distance=4cm] (amp) {Mehrstufiger Verstärker};
+	\node [sdrelement-hybrid, right of=amp, node distance=5cm] (adc) {Analog-Digital-Konverter};
+	\path [sdrpointer] (antenne) -- (prefilter);
+	\path [sdrpointer] (prefilter) -- (amp);
+	\path [sdrpointer] (amp) -- (adc);
+\end{tikzpicture}
+
+Die Antenne kann frei gewählt werden. Aktive Antennen benötigen zusätzliche Hardware. Das Signal der Antenne wird durch ein Tiefpassfilter mit Grenzfrequenz 30MHz geleitet. Dies eliminiert die vom Empfänger nicht verarbeitbaren Frequenzen. Dies erhöht die Zuverlässigkeit da bestimmte Frequenzbänder, beispielsweise UKW-Rundfunk, in manchen Gebieten stark genug sind um den Empfang des restlichen Spektrums zu beeinträchtigen.
+Der Frequenzbereich von Interesse wird anschliessend in mehreren Stufen verstärkt. Die Verstärkung kann mittels Software angepasst werden. Im letzten Schritt wird das Signal von einem Analog-Digital-Konverter digitalisiert und an den digitalen Teil des Empfängers weitergeleitet.
