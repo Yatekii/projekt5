@@ -30,7 +30,7 @@ cur_limit = 1e-3 # Ampere
 
 freq_sweep_range = (3e5, 5e7) # Hz
 output_power = -50 # dBm
-sweep_points = 2e5 # Points
+sweep_points = 2e4 # Points
 sweep_bandwidth = 1e2 # Hz
 
 output_directory = 'vga_lna_2016-12-22_50dBm_20dB_HI_rez'
@@ -78,7 +78,7 @@ try:
         print('Configuration of VNA done.')
         print('-' * term_columns)
 
-        _in = input('Calibrate? y/n')
+        _in = input('Calibrate S11? y/n')
         if _in == 'y' or _in == '':
             print('Calibrating VNA.')
             # calibrate reflection
@@ -105,6 +105,8 @@ try:
 
             print('Calibration stored.')
 
+        _in = input('Calibrate S21? y/n')
+        if _in == 'y' or _in == '':
             # Calibrating transmission
             print('Calibrating short for 2 port.')
             _in = input('Please short port 1 and port 2 cables of the VNA. Then hit Enter.')
@@ -129,7 +131,7 @@ try:
                 time.sleep(0.5)
                 vna.display_format = 'MLIN'
                 data = vna.single_measurement()
-                np.savetxt('{0}/reading_reflection_{1:.2f}.csv'.format(output_directory, V), data, delimiter=',')
+                np.savetxt('{0}/reading_reflection_{1:.2f}.csv'.format(output_directory, V), data, delimiter=',', fmt='%.18e%+.18ej')
 
         _in = input('Measuring transmission? y/n')
         if _in == 'y' or _in == '':
@@ -147,7 +149,7 @@ try:
                 time.sleep(0.5)
                 vna.display_format = 'MLOG'
                 data = vna.single_measurement()
-                np.savetxt('{0}/reading_transmission_{1:.2f}.csv'.format(output_directory, V), data, delimiter=',')
+                np.savetxt('{0}/reading_transmission_{1:.2f}.csv'.format(output_directory, V), data, delimiter=',', fmt='%.18e%+.18ej')
 
         psu_gain.output = False
         print('Program done. Output off.')

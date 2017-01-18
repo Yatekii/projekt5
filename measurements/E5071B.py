@@ -12,7 +12,7 @@ class E5071B(Device):
     def __init__(self, device_id, serial_no=None):
         super().__init__()
         self._instr = usbtmc.Instrument(*device_id)
-        self._instr.timeout = 60 * 1000
+        self._instr.timeout = 60 * 1000 * 5
         device = self._instr.ask("*IDN?").split(',')
         self._vna_manufacturer, self._model_nr, self._serial_no, self._version = device
 

@@ -31,7 +31,11 @@ class PL303(Device):
     @vtg_limit.setter
     def vtg_limit(self, value):
         if 0 < value < 30:
-            self._serial.write(b'OVP1 %.2f\n' % value)
+            self._serial.write(
+                'OVP1 {:.2f}\n'.format(value).encode('ascii')
+            )
+            self._serial.write(b'*OPC?\n')
+            self._serial.readline()
         else:
             raise ValueError('Given value {0} is not in required range (0, 30)V.'.format(value))
 
@@ -43,7 +47,11 @@ class PL303(Device):
     @cur_limit.setter
     def cur_limit(self, value):
         if 0 < value < 3:
-            self._serial.write(b'I1 %.3f\n' % value)
+            self._serial.write(
+                'I1 {:.3f}\n'.format(value).encode('ascii')
+            )
+            self._serial.write(b'*OPC?\n')
+            self._serial.readline()
         else:
             raise ValueError('Given value {0} is not in required range (0, 3)A.'.format(value))
 
@@ -54,7 +62,11 @@ class PL303(Device):
 
     @output.setter
     def output(self, value):
-        self._serial.write(b'OP1 %d\n' % (1 if value else 0))
+        self._serial.write(
+            'OPv1 {:d}\n'.format(1 if value else 0).encode('ascii')
+        )
+        self._serial.write(b'*OPC?\n')
+        self._serial.readline()
 
     @property
     def voltage(self):
@@ -64,6 +76,10 @@ class PL303(Device):
     @voltage.setter
     def voltage(self, value):
         if 0 < value < 30:
-            self._serial.write(b'V1 %.2f\n' % value)
+            self._serial.write(
+                'V1 {:.2f}\n'.format(value).encode('ascii')
+            )
+            self._serial.write(b'*OPC?\n')
+            self._serial.readline()
         else:
             raise ValueError('Given value {0} is not in required range (0, 30)V.'.format(value))
