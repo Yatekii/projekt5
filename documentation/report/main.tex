@@ -11,6 +11,8 @@
 \usetikzlibrary{intersections}
 \usepackage{circuitikz}
 \usepackage{transparent}
+\usepackage[toc,page]{appendix}
+\usepackage{pdfpages}
 
 %%% Harvard-Style Bibliographie
 %\usepackage{natbib}
@@ -100,6 +102,12 @@ Studiengang: \> Elektro- und Informationstechnik
 \section{Resultate}
 \label{sec:resultate}
 \input{sections/resultate}
+
+\clearpage
+\begin{appendices}
+\includepdf[pages=1,fitpaper]{data/images/amplifier}
+
+\end{appendices}
 
 \clearpage
 \bibliography{main,example,IEEEabrv}
