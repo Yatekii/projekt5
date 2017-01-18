@@ -114,12 +114,12 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
         \draw[->] (9, 3) -- (7.5, 3) node [pos=0.66,above,align=center]{$50\Omega$};
 
     \end{circuitikz}
-    \caption{Terminierung des AD8331 zur Messung mit single-ended Geräten die 50 Ohm-Terminierung haben.}
+    \caption{Terminierung des AD8331 zur Messung mit single-ended Geräten die 50 $\Omega$-Terminierung haben.}
     \label{fig:terminator}
 \end{center}
 \end{figure}
 
-Damit sieht der AD8331 die gewünschten 250 Ohm auf beiden Ausgängen des differentiellen Signales. Zugleich sieht der VNA dabei seine gewünschten 50 Ohm.
+Damit sieht der AD8331 die gewünschten 250 $\Omega$ auf beiden Ausgängen des differentiellen Signales. Zugleich sieht der VNA dabei seine gewünschten 50 $\Omega$.
 Diese Lösung eliminiert profitiert zwar nicht von der Störungseliminierung eines differentiellen Signales, ist jedeoch für den Rahmen dieses Projektes mehr als ausreichend.
 
 Was jetzt noch beachtet werden muss ist der Spannungsteiler der durch diese Schaltung am Ausgang vorgeschaltet wird.
@@ -217,4 +217,28 @@ Dies kann ein Zufall sein. Was aber viel interessanter ist, dass die Kurve zwar 
 
 Bei dieser Kurve gibt es einen Unerwarteten Abfall bei 2 MHz abwärts, was in der Vorgängerarbeit auf das aktive Impedanzmatching geschoben wurde. Dieses Verhalten konnte in den gemachten Messungen nicht nachvollzogen werden. Im Gegenteil, es wird ein starker Anstieg gemessen in diesem Bereich.
 
-Ein dritter Punkt ist, dass der Verstärker einen unerwarteten Abfall hat je höher die Frequenz ist. Laut Datasheet sollte der Verstärker locker bis 100MHz um 28 dB verstärken. Die Kurve müsste relativ gerade ausfallen. Erst war der Gedanke da, dass es nur ein Fehle rin diesem Projekt ist. Wie sich aber zeigt bestand dieses Verhalten schon im Vorgängerprojekt, wurde jedoch nicht explizit bemerkt oder wenigstens erwähnt. 
+Ein dritter Punkt ist, dass der Verstärker einen unerwarteten Abfall hat je höher die Frequenz ist. Laut Datasheet sollte der Verstärker locker bis 100MHz um 28 dB verstärken. Die Kurve müsste relativ gerade ausfallen. Erst war der Gedanke da, dass es nur ein Fehle rin diesem Projekt ist. Wie sich aber zeigt bestand dieses Verhalten schon im Vorgängerprojekt, wurde jedoch nicht explizit bemerkt oder wenigstens erwähnt.
+
+Erst viel zu spät wurde dann wenigstens noch bemerkt dass der AD8331 vollig falsch belastet wurde, da nach der Einzelmessung des AD8331 die Widerstände R7 und R8 auf 0 $\Omega$ belassen wurden statt diese korrekterweise auf 250 $\Omega$ anzupassen. Dies ist wichtg damit der AD8331 keine zu grosse last hat welche er nicht zu treiben vermag und dann komische Dinge tut.
+
+Nach dem Wechsel sahen die Resultate waren die Resultate ganz akzeptabel!
+
+\begin{figure}[H]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/vga_lna_2016-01-18_50dBm_10dB_HI_rez}
+    \caption{Verstärkung des AD8331 und ISL55210 50 MHz Sweep bei 10 verschiedenen Verstärkungen.}
+    \label{fig:T_fixed_ISL55210}
+\end{center}
+\end{figure}
+
+TODO: Comment on loss of Gain at highish frequencies 
+
+\begin{figure}[H]
+\begin{center}
+    \includegraphics[width=0.9\textwidth]{data/images/messungen/vga_lna_2016-01-18_50dBm_10dB_HI_rez_mean}
+    \caption{Verstärkung des AD8331 und ISL55210 gemittelt über einen 50 MHz Sweep. Ist und Soll gegenübergestellt. Zudem die Differenz zu jedem Wert.}
+    \label{fig:T_fixed_mean_ISL55210}
+\end{center}
+\end{figure}
+
+Wie gut erkannt werden kann ist der Fehler der am ISL55210 entsteht grösser als derjenige, der am AD8331 entsteht. Jedoch ist der Fehler über dem ISL55210 mit weniger als 1.5 dB immernoch sehr klein. Die Abweichung zum erwarteten Wert entsteht wohl dadurch, dass zum einen die Terminierung mit 270 $\Omega$ zwischen AD8331 und ISL55210 zu hoch gewählt ist (250 $\Omega$ wären korrekt) und der Messadapter mit 250 $\Omega$, welche für den AD8331 benötigt wurden, ebenfalls einen zu hohen Widerstand hat (200 $\Omega$ wären korrekt). Wahrscheinlich der wichtigste Punkt ist aber dass die Feedbackwiderstände am AD8331 nicht eine so hohe Genauigkeit haben, dass die Effektive Verstärkung variiert.
