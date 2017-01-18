@@ -195,7 +195,16 @@ Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtige Eigenschaft
 \end{equation}
 
 \subsubsection{LP38798}
-TODO: FRANCESCO
+Der LP38798 ist ein linearer Spannungsregler mit guter Rauschdämpfung und aktivem Rippelausgleich. Er wurde anstelle eines Schaltreglers eingesetzt, da Schaltregler aufgrund ihres Funktionsprinzips tendenziell Störsignale einbringen statt, wie im Falle von Linearregler, sie zu dämpfen.
+Dieser Regler im Speziellen ist auf tiefes Rauschen (5µV RMS) und einen hohen Versorgungsspannungsdurchgriff (PSRR) optimiert, weswegen er uns bei der Recherche ins Auge gestochen ist. Dies ist zur stabilen Stromversorgung der Verstärker auch bei Betrieb an einer weniger als optimalen Stromquelle von Bedeutung.
+Weitere Kenndaten wie Chipgrösse, Preis und Effizienz waren bei der Auswahl von sekundärer Wichtigkeit da der Einsatz im Rahmen des Projekts auf Prototypen zur stationären Verwendung beschränkt ist.
+
+% FRANCESCO GRAFIK PSRR UND NOISE DENSITY
+
+Um Verbrauchsspitzen abzufangen wurde dem Regler ein Tiefpassfilter mit Kapazitäten nachgeschaltet.
+Eine Umsetzung mit Schaltregler wäre prinzipiell vorstellbar. Eine solche Lösung hätte aber aufgrund der fehlenden architekturgegebenen Filterung zusätzliche externe Filter, speziell für die Schaltfrequenz aber auch als Ersatz des intrinsischen Filtereffekts, erfordert.
+
+Beim Design der Leiterplatte wurde darauf geachtet, dass die leistungsführenden Leitungen bis an die Chipanschlüsse möglichst breit gehalten wurden. Zudem ist die Massenfläche zur besseren Abführung der abfallenden thermischen Leistung mehrfach durchkontaktiert.
 
 \subsection{Leiterplattendesign}
 \label{subsec:Leiterplattendesign}
