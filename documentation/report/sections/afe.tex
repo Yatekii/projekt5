@@ -149,7 +149,7 @@ Die Dämpfung des Dämpfungsgliedes ist stufenlos von 0 bis 48 dB übder den GAI
 Zuletzt wird ein Nachverstärker zugeschaltet der noch einmal 3.5 oder 15.5 dB verstärkt. Die Verstärkung kann über den HILO-Pin gewählt werden.
 Ausserdem kann die Ausgangsspannung auf ein Maximum begrenzt werden, was nützlich ist um weitere Bauteile vor Überspannung zu schützen.
 
-Die totale Verstärkung kann einfach mit den Formeln in \ref{eq:A8331_LO} und \ref{eq:A8331_HI} erhalten werden.
+Die totale Verstärkung kann einfach mit den Formeln\cite{AD8331} in \ref{eq:A8331_LO} und \ref{eq:A8331_HI} erhalten werden.
 
 \begin{equation}
     G_{dB} = 50 \frac{dB}{V} \cdot V_{GAIN} - 6.5 dB, HILO = LO
@@ -175,14 +175,14 @@ Die Beschaltung wurde aus dem Application Note übernommen. Hier wurde viel Auge
 Der MCP4706\cite{MCP4706} ist ein 8 bit Digital-Analog-Konverter. Er wird dazu genutzt die variable Verstärkung des AD8331 mittels einer Spannung einzustellen. Er wurde so konfiguriert dass er maximal ein Volt Ausgangsspannung hat, da dies die Grenze für den AD8331 ist. Gleichzeitig gehen zehn Skalierungsstufen verloren, da der AD8331 als Untergrenze 40 mV erwartet. Somit geht der zulässige Wertebereich für den DAC von 11 bis 255, was genügend dynamic Range sein sollte. Wieviel Verstärkung das Erhöhen des Wertes am DAC um eins zum Ergebnis hat sieht man in Gleichung \ref{eq:DAC_wert}.
 
 \begin{equation}
-    \delta G_{dB} = 50 \frac{dB}{V} \cdot \frac{1}{2^8 - 1} = 0.196 dB
+    \Delta G_{dB} = 50 \frac{dB}{V} \cdot \frac{1}{2^8 - 1} = 0.196 dB
 \label{eq:DAC_wert}
 \end{equation}
 
 Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtiges Auswahlkriterium zusammen mit einem rauscharmen Ausgang. Der MCP4706 hat eine simple Resistorladder, das heisst, es werden je nach Ausgangswert Widerstände dazu- oder weggeschaltet. Damit sollte die Spannung am DAC-Ausgang praktisch keine Schwankungen erfahren, beziehungsweise ist es nur vom Rauschen der Spannungsversorgung abhängig, wie in \ref{eq:DAC_rauschen2} ersichtlich ist. Nimmt man an, dass $\Delta f \xrightarrow 0$, da die Verstärkung einmal zu beginn der Übermittlung eingestellt wird und dann statisch bleibt, so sieht man dass das Rauschen vernachlässigbar wird.
 
 \begin{equation}
-    U_N = \sqrt{4 \cdot k_B \cdot T \cdot \Delta f \cdot R}, k_B = 1.38\cdot 10^{-23}\frac{J}{K}, T = 300K, R = 210k\Omega
+    U_N = \sqrt{4 \cdot k_B \cdot T \cdot \Delta f \cdot R},\,k_B = 1.38\cdot 10^{-23}\frac{J}{K},\,T = 300K,\,R = 210k\Omega
 \label{eq:DAC_rauschen}
 \end{equation}
 
@@ -229,7 +229,7 @@ Beim Design der Leiterplatte wurde darauf geachtet, dass die leistungsführenden
 	\item LTC2252 (ADC)
 \end{itemize}
 
-
+\clearpage
 \subsection{Leiterplattendesign}
 \label{subsec:Leiterplattendesign}
 Die Leiterplatte wurde so ausgelegt, dass alle Komponenten (VGA, LNA, ADC) des Frontends mehr oder weniger abgekapselt auf einem Board sind. Jede Komponente kann zu der weiterführenden benachbarten geschaltet werden. Wenn die Komponenten nicht gechaint werden, so können sie am Input und am Output an einen Balun angeschlossen werden. So können alle Komponenten einzeln gemessen werden. Die Baluns sind notwendig damit die differentiellen Komponenten korrekt terminiert werden und das Signal in ein single-ended Signal umgewandelt wird. Diese zweite Eigenschaft ist voraussetzung um einen VNA anschliessen zu können.

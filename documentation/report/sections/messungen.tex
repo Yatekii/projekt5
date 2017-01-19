@@ -35,7 +35,7 @@ Mit einer ersten bestückten Leiterplatte wurden daher mit dem Oszilloskop erste
 \begin{figure}[H]
 \begin{center}
     \includegraphics[width=1\textwidth]{data/images/messungen/erste_messung}
-    \caption{Erste Messungen des Gesamtsystems. Inkorrekt terminiert. Mit Oszilloskop gemessen.}
+    \caption{Erste Messungen des Gesamtsystems. Inkorrekt terminiert. Mit dem Oszilloskop gemessen.}
     \label{fig:messungen_erste}
 \end{center}
 \end{figure}
@@ -57,8 +57,6 @@ Bei diesen Messungen war jedoch das DUT nicht korrekt terminiert. Dies war einer
 
 Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended Signal, wie im Abschnitt \ref{subsec:Leiterplattendesign} beschrieben, Baluns vorgesehen. Diese sind jedoch relativ schwer zu kriegen und sind dann relativ teuer. Deswegen wurde eine günstigere Lösung gesucht. Diese wurde in der in \ref{fig:terminator} dargestellten Schaltung gefunden.
 
-TODO: fix value
-
 \begin{figure}[H]
 \begin{center}
     \begin{circuitikz}
@@ -70,12 +68,12 @@ TODO: fix value
         \draw (1,2)
         node[ocirc]{}
         to[short] (2,2)
-        to[R=$237\Omega$] (4,2)
+        to[R=$222\Omega$] (4,2)
         to[short] (6, 2)
         node[ocirc]{};
 
         \draw (5,2)
-        to[R,l_=$28\Omega$, *-*] (5,0)
+        to[R,l_=$65\Omega$, *-*] (5,0)
         node[rground, rotate=-90]{};
 
         \draw[dotted] (6, 2)
@@ -212,7 +210,7 @@ Dies kann ein Zufall sein. Was aber viel interessanter ist, dass die Kurve zwar 
 \begin{figure}[H]
 \begin{center}
     \includegraphics[width=1\textwidth]{data/images/ganzes_system_vorganger}
-    \caption{Verstärkung des AD8331 und ISL55210. Gemessen im Vorgängerprojekt.}
+    \caption{Verstärkung des AD8331 und ISL55210. Gemessen im Vorgängerprojekt\cite{SDRprev}.}
     \label{fig:ganzes_system_vorganger}
 \end{center}
 \end{figure}
@@ -233,7 +231,7 @@ Nach dem Wechsel sahen die Resultate waren die Resultate ganz akzeptabel!
 \end{center}
 \end{figure}
 
-TODO: Comment on loss of Gain at highish frequencies 
+In dieser Grafik kann ohne weiteres erkannt werden, dass im ISL55210 ungewollt $1.5 \frac{dB}{dec}$ verliert. Dieser Effekt ist gar nicht toll. zwar gehen bei 30 MHz nur 2.5 dB verloren, jedoch ist die Tatsache dass der Effekt existiert beunruhigend, da anscheinend etwas noch immer nicht korrekt ist. Dies kann natürlich noch immer an der Terminierung liegen.
 
 \begin{figure}[H]
 \begin{center}
