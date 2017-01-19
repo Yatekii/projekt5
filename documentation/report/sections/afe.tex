@@ -6,7 +6,7 @@ Die Rahmenbedingungen für das Analoge Frontend (AFE) waren durch die Vorgänger
 
 Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal abtastet. Diese Kette ist in Abbildung \ref{fig:chain} zu sehen.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \tikzset{font={\fontsize{8pt}{12}\selectfont}}
         \begin{tikzpicture}[x=0.021\linewidth,y=0.021\linewidth]
@@ -235,7 +235,7 @@ Es wird im Datasheet explizit erwähnt dass der Ground unter und um den Chip aus
 Im LTC2252 Datasheet wird zudem erwähnt, dass digitale und analoge Signale gut getrennt werden müssen. Diese sollten sich unter keinen Umständen in die Quere kommen um parasitäre Koplungseffekte zu vermeiden. Dies macht einem der LTC2252 zum Glück sehr leicht, da die Signale im Pinout schon sinnvoll getrennt angeordnet sind.
 Die Groundplane wurde hier so eingeschnitten, dass digitale Signale nicht über den analogen Bereich zurücklaufen. Dies ist in Grafik \ref{fig:groundplane_bsp} sehr schön zu sehen.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \begin{center}
     \tikzset{font={\fontsize{48pt}{12}\selectfont}}
     \begin{tikzpicture}
