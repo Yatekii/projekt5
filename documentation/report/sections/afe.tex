@@ -1,6 +1,6 @@
 % NOAH
 
-Die Rahmenbedingungen für das Analoge Frontend (AFE) waren durch die Vorgängerarbeit bereits gegeben. Diese sind in \ref{sec:ausgangslage} bereits erläutert.
+Die Rahmenbedingungen für das Analoge Frontend (AFE) waren durch die Vorgängerarbeit bereits gegeben. Diese sind in \ref{sec:ausgangslage} genauer erläutert.
 
 \subsection{Schaltungsdesign}
 
@@ -215,13 +215,28 @@ Eine Umsetzung mit Schaltregler wäre prinzipiell vorstellbar. Eine solche Lösu
 
 Beim Design der Leiterplatte wurde darauf geachtet, dass die leistungsführenden Leitungen bis an die Chipanschlüsse möglichst breit gehalten wurden. Zudem ist die Massenfläche zur besseren Abführung der abfallenden thermischen Leistung mehrfach durchkontaktiert.
 
+Zur Kompensation der abnehmenden PSRR in höheren Frequenzen und Filterung der Spannung von externen Quellen ist in beiden Spannungsnetzen ein Pi-Tiefpass-Filter eingebaut.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[clip,scale=0.4]{data/images/powerfilter}
+		\caption{Schema des Rauschfilters}
+		\label{fig:powerfilter}
+	\end{center}
+\end{figure}
+
+% GRAFIK SIMPLOT
+
 \subsection{Stromversorgung}
+Die beiden Spannungsnetze werden wie folgt verwendet.
+
 5V Spannungseingang, extern gespiesen:
 
 \begin{itemize}  
 	\item AD8331 (LNA / VGA)
 	\item MCP4706 (DAC)
 \end{itemize}
+
 3.3V Spannungseingang, gespiesen vom Linearregler (LP38798):
 
 \begin{itemize}  
