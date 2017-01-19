@@ -1,1 +1,14 @@
-% BOTH
+Ziel des Projektes war es eigentlich, ein Redesign des bestehenden Projektes 'Software Defined Radio mit FPGA' zu machen.
+
+Dazu war es vorab nötig ein Test-PCB zu gestalten, auf welchem anständige Messungen gemacht werden können.
+Nach einigem Einlesen in die Themata Verstärker und HF wurde die Vorarbeit genauer untersucht.
+
+Unter kleinlichster Berücksichtigung der Designvorgaben in den jeweiligen Datenblättern und Tipps von Analog Devices\cite{StayingWellGrounded2012} wurde dann eine Leiterplatte gefertigt, welche die notwendigen Messanschlüsse hat und die einzelnen Baugruppen separiert. Hier wurde darauf geachtet, dass die Anordnung der Komponenten zu den Chips möglichst so angeordnet sind, wie im finalen Design notwendig, sprich nahe beim Baustein, analoges und digitales getrennt und mit korrektem Grounding.
+
+Es konnten dann gute Messergebnisse zum AD8331 erzeugt werden. Probleme konnten keine festgestellt werden; die Vermutung vom Vorgängerprojekt dass das aktive Impedanzmatching Probleme bereitet konnte nicht bestätigt werden. Der AD8331 hält alle Versprechen des Datasheets was Verstärkung anbelangt.
+
+Der ISL55210 konnte ebenfalls ausgemessen werden und liefert überzeugende Ergebnisse. Die Resultate sind nicht ganz so wie laut Datasheet erwartet. Mit einer maximalen Gesamtabweichung von 2.5 dB leistet er jedoch seine Arbeit im Gesamtsystem. Hier wurden nach anfänglich fast gleichen Ergebnissen wie bei der Vorgängerarbeit Fehler festgestellt welche bisher nicht erkannt wurden. Nach einer korrekten Terminierung zwischen den Verstärkerstufen verhält sich der ISL55210 aber fast wie gewünscht.
+
+Der MCP4706 war relativ einfach anzusteuern. Er verhielt sich wie erwartet und kann so eingesetzt werden.
+
+Auch der LP38798 verhielt sich wie gewünscht und es gab keine erkennbaren Probleme mit der Spannungsversorgung. Auch hier konnten die Probleme der Vorgängerarbeit nicht reproduziert werden.
