@@ -14,7 +14,10 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
-
+\usepackage[toc,page]{appendix}
+\usepackage{pdfpages}
+\usepackage{siunitx}
+\usepackage{mathtools,amssymb}
 
 %%% IEEE-Style Bibliographie
 \bibliographystyle{IEEEtran}
@@ -100,6 +103,38 @@ Studiengang: \> Elektro- und Informationstechnik
 \section{Resultate}
 \label{sec:resultate}
 \input{sections/resultate}
+
+\clearpage
+\begin{appendices}
+
+Die beigelegte CD beinhaltet das Git-Repository, welches folgende Dokumente beinhaltet:
+  
+  \begin{itemize}
+    \item Schaltpläne\\
+    \item Layout\\
+    \item Python-Scripts\\
+    \item Arduino-Source\\
+    \item Datasheets
+  \end{itemize}
+\includepdf[pages=1,fitpaper]{data/images/amplifier}
+
+\begin{figure}[H]
+\begin{center}
+  \includegraphics[trim={6cm 7.5cm 0cm 4cm},clip]{data/images/amplifier-F_Cu}
+  \caption{Top Layout.}
+  \label{fig:top}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+  \includegraphics[trim={6cm 7.5cm 0cm 4cm},clip]{data/images/amplifier-B_Cu}
+  \caption{Bottom Layout.}
+  \label{fig:bot}
+\end{center}
+\end{figure}
+
+\end{appendices}
 
 \clearpage
 \bibliography{main,example,IEEEabrv}
