@@ -129,27 +129,25 @@ Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal ab
 Diese Anordnung wurde so im Vorgängerprojekt gewählt um eine gewünschte verstellbare Verstärkung von 24 - 84 dB zu erhalten.
 Da aber nicht alles so reibungslos funktionierte wie gewünscht, wurden alle Komponenten noch einmal sogrfältig durchgegangen und eine Leiterplatte gefertigt, welche die Komponenten einzeln aufbaut und die Möglichkeit hat diese so separat auszumessen.
 
-Nur der DAC und der Spannungswandler von 5 auf 3.3 Volt war im Vorgängerprojekt so noch nicht vorhanden. Diese Komponenten wurden aufgrund der früher (Kapitel \ref{sec:ausgangslage}) genannten Mängel gewählt und implementiert.
+Ausser dem DAC und dem Spannungswandler von 5 auf 3.3 Volt war im Vorgängerprojekt alle aktiven Komponenten gleich vorhanden. Diese Komponenten wurden aufgrund der früher (Kapitel \ref{sec:ausgangslage}) genannten Mängel gewählt und implementiert.
 
 \subsubsection{AD8331}
 
-Der AD8331\cite{AD8331} ist ein Vorverstärker, der fixe Verstärkerstufen im Innern hat und dazu ein Dämpfungsglied, welches so eine verstellbare Verstärkung ermöglicht. Ausserdem kann wahlweise eine von zwei fixen Verstärkungen zugeschaltet werden. Dieser Aufbau ist in Grafik \ref{fig:AD8331} dargestellt.
+Der AD8331\cite{AD8331} ist ein Vorverstärker, der fixe Verstärkerstufen im Innern hat und dazu ein Dämpfungsglied, welches so eine verstellbare Verstärkung ermöglicht. Ausserdem kann wahlweise eine von zwei vorgegebenen Verstärkungen zugeschaltet werden. Dieser Aufbau ist in Grafik \ref{fig:AD8331} dargestellt.
 
 \begin{figure}[H]
 \begin{center}
     \includegraphics[trim={11.5cm 18.3cm .5cm 5cm},clip,scale=1.5]{../AD8331_8332_8334_Datasheet}
-    \caption{A8331 Blockschaltbild.}
+    \caption{A8331 Blockschaltbild aus dem Datenblatt\cite{AD8331}.}
     \label{fig:AD8331}
 \end{center}
 \end{figure}
 
-Der erste Verstärker erwartet ein single-ended Signal am Eingang verstärkt es um 19 dB, versieht es mit einem Bias und gibt ein differentielles Signal zurück. Nach dieser Stufe sind alle Signale differentiell.
-Diese Stufe muss dann extern zum Dämpfungsglied geschaltet werden. Es wäre gut möglich hier noch extern ein Filter zuzuschalten. In dieser Anwendung wurden einfach 100n Kondensatoren dazwischen geschaltet um noch einmal DC zu blocken.
+Der erste Verstärker erwartet ein asymmetrisches Signal, auch single-ended genannt, am Eingang und verstärkt es um 19 dB, versieht es mit einem Bias und gibt ein differentielles Signal zurück. Nach dieser Stufe sind alle Signale differentiell.
+Diese Stufe muss dann extern zum Dämpfungsglied geschaltet werden. Es wäre gut möglich hier noch extern ein Filter zuzuschalten. In dieser Anwendung wurden einfach 100n Kondensatoren dazwischen geschaltet um noch einmal DC zu blocken. % TODO überarbeiten
 Die Dämpfung des Dämpfungsgliedes ist stufenlos von 0 bis 48 dB übder den GAIN-Pin verstellbar. Hierfür wurde ein einfacher DAC verwendet. Dazu in Abschnitt \ref{subsec:MCP4706} mehr.
-Zuletzt wird ein Nachverstärker zugeschaltet der noch einmal 3.5 oder 15.5 dB verstärkt. Dies kann über den HILO-Pin gesteuert werden.
-Ausserdem kann die Ausgangsspannung auf ein Maximum begrenzt werden, was nützlich ist um weitere Bauteile durch Überspannung zu schützen.
-
-Der Ad8331 operiert bei 5V.
+Zuletzt wird ein Nachverstärker zugeschaltet der noch einmal 3.5 oder 15.5 dB verstärkt. Die Verstärkung kann über den HILO-Pin gewählt werden.
+Ausserdem kann die Ausgangsspannung auf ein Maximum begrenzt werden, was nützlich ist um weitere Bauteile vor Überspannung zu schützen.
 
 Die totale Verstärkung kann einfach mit den Formeln in \ref{eq:A8331_LO} und \ref{eq:A8331_HI} erhalten werden.
 
@@ -164,25 +162,24 @@ Die totale Verstärkung kann einfach mit den Formeln in \ref{eq:A8331_LO} und \r
 \end{equation}
 
 \subsubsection{ISL55210}
-Der ISL55210\cite{ISL55210} ist ein Differentieller Verstärker. Er wird normal mit Feedbackwiderständen beschaltet, so dass man die gewünschte Verstärkung von 28.5 dB erhält.
-Er hat ein GBWP von 4 Ghz was für das geplante SDR alleweil reicht, da das SDR nur bis 30 Mhz operieren soll. Bei einer Verstärkung von 28.5 dB ist das GBWP also noch lange nicht ausgereizt.
-Dieser Verstärker operiert bei 3.3 Volt. Es ist also notwendig eine 5V und 3V3 Stromversorgung zu haben.
+Der ISL55210\cite{ISL55210} ist ein differentieller Verstärker. Er wird normal mit Feedbackwiderständen beschaltet, so dass die gewünschte Verstärkung von 28.5 dB erreicht wird.
+Er hat ein GBWP von 4 Ghz was für das geplante SDR alleweil reicht, da nur Signale bis 30 Mhz von Interesse sind. Bei einer Verstärkung von 28.5 dB ist das GBWP also noch lange nicht ausgereizt.
 
 \subsubsection{LTC2252}
-Es wurde der LTC2252\cite{LTC2252} mit 12 Bit als A/D-Wandler gewählt. Es ist zu evaluieren ob so eine hohe Auflösung überhaupt notwendig ist.
-Mit 105 MS/s ist er sicher genug schnell um Aliasing zu verhinden, wenn man annimmt dass bei einer Cutoffrequenz von 30 MHz das Filter 9. Ordnung bei 50 Mhz um etwa 50dB gedämpft wird.
-Die Beschaltung wurde aus dem Application Note übernommen. Hier wurde viel Augenmerk darauf gelegt die Anweisungen im Application Note akribisch zu befolgen. Dies war dann insbesondere im Leiterplattendesign wichtig.
+Es wurde der LTC2252\cite{LTC2252} mit 12 Bit als A/D-Wandler gewählt. Erfahrungen aus dem Vorgängerprojekt haben gezeigt, dass höhere Auflösungen nicht einfach zu einem besseren Resultat führen. % TODO Hufi's Argumentation .
+Mit 105 MS/s ist er sicher genug schnell um Aliasing zu verhinden, wenn man annimmt dass bei einer Cutoffrequenz von 30 MHz das Eingangsfilter 9. Ordnung bei 50 Mhz um etwa 50dB gedämpft wird.
+Die Beschaltung wurde aus dem Application Note übernommen. Hier wurde viel Augenmerk darauf gelegt die Anweisungen im Application Note akribisch zu befolgen. Dies war dann insbesondere im Leiterplattendesign wichtig, was im Abschnitt \ref{subsec:Leiterplattendesign} genauer besprochen wird.
 
 \subsubsection{MCP4706}
 \label{subsec:MCP4706}
-Der MCP4706\cite{MCP4706} ist ein 8 bit DAC. Er wird dazu genutzt die variable Verstärkung des AD8331 einzustellen. Dieser wurde so konfiguriert dass er maximal ein Volt Ausgangsspannung hat, da dies die Grenze ist für den AD8331. Gleichzeitig verliert man zehn Skalierungsstufen, da der AD8331 als Untergrenze 40 mV erwartet. Somit geht der zulässige Wertebereich für den DAC von 11 bis 255. Dies sollte genügend dynamic Range sein. Wieviel Verstärkung das Erhöhen des Wertes am DAC um eins zum Ergebnis hat sieht man in Gleichung \ref{eq:DAC_wert}.
+Der MCP4706\cite{MCP4706} ist ein 8 bit Digital-Analog-Konverter. Er wird dazu genutzt die variable Verstärkung des AD8331 mittels einer Spannung einzustellen. Er wurde so konfiguriert dass er maximal ein Volt Ausgangsspannung hat, da dies die Grenze für den AD8331 ist. Gleichzeitig gehen zehn Skalierungsstufen verloren, da der AD8331 als Untergrenze 40 mV erwartet. Somit geht der zulässige Wertebereich für den DAC von 11 bis 255, was genügend dynamic Range sein sollte. Wieviel Verstärkung das Erhöhen des Wertes am DAC um eins zum Ergebnis hat sieht man in Gleichung \ref{eq:DAC_wert}.
 
 \begin{equation}
     \delta G_{dB} = 50 \frac{dB}{V} \cdot \frac{1}{2^8 - 1} = 0.196 dB
 \label{eq:DAC_wert}
 \end{equation}
 
-Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtige Eigenschaft die gefragt war. Zudem ist es natürlich wichtig dass der DAC rauscharm ist. Der MCP4706 hat eine simple Resistorladder, das heisst, es werden je nach Ausgangswert Widerstände dazu- oder weggeschaltet. Damit sollte die Spannung am DAC-Ausgang praktisch keine Schwankungen erfahren, oder besser gesagt: es ist nur vom Rauschen der Spannungsversorgung abhängig, wie man in \ref{eq:DAC_rauschen2} sehen kann. Nimmt man an, dass $\Delta f \xrightarrow 0$, da die Verstärkung einmal zu beginn der Übermittlung eingestellt wird und dann statisch bleibt, so sieht man dass das Rauschen vernachlässigbar wird.
+Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtiges Auswahlkriterium zusammen mit einem rauscharmen Ausgang. Der MCP4706 hat eine simple Resistorladder, das heisst, es werden je nach Ausgangswert Widerstände dazu- oder weggeschaltet. Damit sollte die Spannung am DAC-Ausgang praktisch keine Schwankungen erfahren, beziehungsweise ist es nur vom Rauschen der Spannungsversorgung abhängig, wie in \ref{eq:DAC_rauschen2} ersichtlich ist. Nimmt man an, dass $\Delta f \xrightarrow 0$, da die Verstärkung einmal zu beginn der Übermittlung eingestellt wird und dann statisch bleibt, so sieht man dass das Rauschen vernachlässigbar wird.
 
 \begin{equation}
     U_N = \sqrt{4 \cdot k_B \cdot T \cdot \Delta f \cdot R}, k_B = 1.38\cdot 10^{-23}\frac{J}{K}, T = 300K, R = 210k\Omega
@@ -199,12 +196,39 @@ Der LP38798 ist ein linearer Spannungsregler mit guter Rauschdämpfung und aktiv
 Dieser Regler im Speziellen ist auf tiefes Rauschen (5µV RMS) und einen hohen Versorgungsspannungsdurchgriff (PSRR) optimiert, weswegen er uns bei der Recherche ins Auge gestochen ist. Dies ist zur stabilen Stromversorgung der Verstärker auch bei Betrieb an einer weniger als optimalen Stromquelle von Bedeutung.
 Weitere Kenndaten wie Chipgrösse, Preis und Effizienz waren bei der Auswahl von sekundärer Wichtigkeit da der Einsatz im Rahmen des Projekts auf Prototypen zur stationären Verwendung beschränkt ist.
 
-% FRANCESCO GRAFIK PSRR UND NOISE DENSITY
+\begin{figure}[H]
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[clip,scale=0.6]{data/images/ldo_noise}
+		\caption{Rauschen aus Datenblatt\cite{LP38798}.}
+		\label{fig:ldo_rauschen}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[clip,scale=0.6]{data/images/ldo_psrr}
+		\caption{PSRR aus Datenblatt\cite{LP38798}.}
+		\label{fig:ldo_psrr}
+	\end{subfigure}
+\end{figure}
 
 Um Verbrauchsspitzen abzufangen wurde dem Regler ein Tiefpassfilter mit Kapazitäten nachgeschaltet.
 Eine Umsetzung mit Schaltregler wäre prinzipiell vorstellbar. Eine solche Lösung hätte aber aufgrund der fehlenden architekturgegebenen Filterung zusätzliche externe Filter, speziell für die Schaltfrequenz aber auch als Ersatz des intrinsischen Filtereffekts, erfordert.
 
 Beim Design der Leiterplatte wurde darauf geachtet, dass die leistungsführenden Leitungen bis an die Chipanschlüsse möglichst breit gehalten wurden. Zudem ist die Massenfläche zur besseren Abführung der abfallenden thermischen Leistung mehrfach durchkontaktiert.
+
+\subsection{Stromversorgung}
+5V Spannungseingang, extern gespiesen:
+
+\begin{itemize}  
+	\item AD8331 (LNA / VGA)
+	\item MCP4706 (DAC)
+\end{itemize}
+3.3V Spannungseingang, gespiesen vom Linearregler (LP38798):
+
+\begin{itemize}  
+	\item ISL55210 (Differentieller Verstärker)
+	\item LTC2252 (ADC)
+\end{itemize}
+
 
 \subsection{Leiterplattendesign}
 \label{subsec:Leiterplattendesign}
