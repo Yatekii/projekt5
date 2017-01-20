@@ -194,7 +194,7 @@ Der ISL55210\cite{ISL55210} ist ein differentieller Verstärker. Er wird normal 
 Er hat ein GBWP von 4 Ghz was für das geplante SDR alleweil reicht, da nur Signale bis 30 Mhz von Interesse sind. Bei einer Verstärkung von 28.5 dB ist das GBWP also noch lange nicht ausgereizt.
 
 \subsubsection{LTC2252}
-Es wurde der LTC2252\cite{LTC2252} mit 12 Bit als A/D-Wandler gewählt. Erfahrungen aus dem Vorgängerprojekt haben gezeigt, dass höhere Auflösungen nicht einfach zu einem besseren Resultat führen. % TODO Hufi's Argumentation .
+Es wurde der LTC2252\cite{LTC2252} mit 12 Bit als A/D-Wandler gewählt. Erfahrungen haben aber gezeigt, dass eine hohe Auflösung nicht eine absolute Notwendigkeit ist. Denn wenn das Signal welches interessant so klein ist, dass es kaum mehr ein Bit toggelt, daneben aber ein Signal ist welches eine riesige Signalamplitude hat und diese Signale nun gemittelt werden, so ergibt sich dann eben doch wieder ein Wert zwischen 0 und 1, mit welchem man arbeiten kann. Deswegen können fremde Signale empfangstechnisch auch begünstigend sein.
 Mit 105 MS/s ist er sicher genug schnell um Aliasing zu verhinden, wenn man annimmt, dass bei einer Cutoffrequenz von 30 MHz das Eingangsfilter 9. Ordnung bei 50 Mhz um etwa 50dB gedämpft wird.
 Die Beschaltung wurde aus dem Application Note übernommen. Hier wurde viel Augenmerk darauf gelegt die Anweisungen im Application Note akribisch zu befolgen. Dies war dann insbesondere im Leiterplattendesign wichtig, welches im Abschnitt \ref{subsec:Leiterplattendesign} genauer besprochen wird.
 
