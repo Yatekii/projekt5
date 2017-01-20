@@ -47,8 +47,8 @@ Mittels des diesem Projekts zugrunde liegenden Software Defined Radios kann der 
 \begin{center}
     \begin{tikzpicture}[node distance = 2cm, auto]
 		\node [sdrelement-ext] (antenne) {Antenne};
-		\node [sdrelement-analog, right of=antenne, node distance=3cm] (afe) {Analoges Frontend};
-		\node [sdrelement-hybrid, right of=afe, node distance=4cm] (adc) {Analog-Digital-Konverter};
+		\node [sdrelement-analog, right of=antenne, node distance=3.5cm] (afe) {Analoges Frontend};
+		\node [sdrelement-hybrid, right of=afe, node distance=5cm] (adc) {Analog-Digital-Konverter};
 		\node [sdrelement-digital, below of=antenne, node distance=2cm, xshift=5.5em] (fpga) {Digitale Signalverarbeitung};
 		\node [sdrelement-ext, right of=fpga, node distance=5cm] (ui) {Benutzerinterface};
 		\path [sdrpointer] (antenne) -- (afe);
