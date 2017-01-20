@@ -247,7 +247,25 @@ Zur Kompensation der abnehmenden PSRR in höheren Frequenzen und Filterung der S
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[clip,scale=0.4]{data/images/powerfilter}
+        \begin{circuitikz}[scale=0.5]
+
+			\draw (-1,2)
+			node[ocirc]{}
+			to[short] (1,2)
+			to[L=$22\mu H$] (3,2)
+			to[short] (5, 2) node[ocirc]{};
+
+			\draw (0, 2)
+			to [short] (0, 1)
+			to [C=$22\mu F$] (0, -1)
+			node[rground]{};
+
+			\draw (4, 2)
+			to [short] (4, 1)
+			to [C=$22\mu F$] (4, -1)
+			node[rground]{};
+
+		\end{circuitikz}
 		\caption{Schema des Rauschfilters}
 		\label{fig:powerfilter}
 	\end{center}
