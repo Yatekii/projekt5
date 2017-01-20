@@ -27,6 +27,34 @@ Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal ab
             -- (13, 0) node{}
             -- cycle;
 
+            \draw[name path=dac] (7, 8) node{}
+            -- (7, 14) node{}
+            -- (13, 14) node{}
+            -- (13, 8) node{}
+            -- cycle;
+
+            \draw[name path=vgain, pos=0.5, sloped, above] (10, 6) node{}
+            -- (10, 8) node{$V_{GAIN}$};
+
+            \node at (10, 11) {MCP4706};
+
+            \draw[name path=fpga] (21, 8) node{}
+            -- (21, 14) node{}
+            -- (42, 14) node{}
+            -- (42, 8) node{}
+            -- cycle;
+
+            \node at (31.5, 11) {FPGA};
+
+            \draw[name path=hilo, pos=0.5, sloped, above] (24, 4.5) node{}
+            -- (24, 8) node{HILO};
+
+            \draw[name path=i2c, pos=0.5, sloped, above left] (13, 11) node{}
+            -- (21, 11) node{$I^2C$};
+
+            \draw[name path=parallel] (39, 6) node{}
+            -- (39, 8) node{};
+
             \node at (10, 3) {0 to 40 dB};
             \node at (10, -1) {Attenuator};
 
@@ -122,7 +150,7 @@ Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal ab
             \draw[] (CS5-2) -- (CS6-1);
         \end{tikzpicture}
     \end{center}
-    \caption{Blockschaltbild des Analogen Frontends TODO: evtl noch DAC und pins zeichnen}
+    \caption{Blockschaltbild des Analogen Frontends}
     \label{fig:chain}
 \end{figure}
 
