@@ -1,10 +1,10 @@
 % NOAH
 
-Die Rahmenbedingungen für das Analoge Frontend (AFE) waren durch die Vorgängerarbeit bereits gegeben. Diese sind in \ref{sec:ausgangslage} genauer erläutert.
+Die Rahmenbedingungen für das Analoge Frontend (AFE) waren durch die Vorgängerarbeit\cite{SDRprev} bereits gegeben.
 
 \subsection{Schaltungsdesign}
 
-Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal abtastet. Diese Kette ist in Abbildung \ref{fig:chain} zu sehen.
+Das AFE ist eine Kette aus Verstärkerstufen, an deren Ende ein ADC das Signal abtastet. Diese Kette ist in Abbildung \ref{fig:chain} zu sehen.
 
 \begin{figure}[H]
     \begin{center}
@@ -154,10 +154,10 @@ Das AFE ist eine Kette aus Verstärkerstufen an deren Ende ein ADC das Signal ab
     \label{fig:chain}
 \end{figure}
 
-Diese Anordnung wurde so im Vorgängerprojekt gewählt um eine gewünschte verstellbare Verstärkung von 24 - 84 dB zu erhalten.
-Da aber nicht alles so reibungslos funktionierte wie gewünscht, wurden alle Komponenten noch einmal sogrfältig durchgegangen und eine Leiterplatte gefertigt, welche die Komponenten einzeln aufbaut und die Möglichkeit hat diese so separat auszumessen.
+Diese Anordnung wurde so im Vorgängerprojekt gewählt, um eine gewünschte, verstellbare Verstärkung von 24 - 84 dB zu erhalten.
+Da aber nicht alles so reibungslos funktionierte wie gewünscht, wurden alle Komponenten noch einmal sogrfältig durchgegangen und eine Leiterplatte gefertigt, welche die Komponenten einzeln aufbaut und die Möglichkeit hat diese separat auszumessen.
 
-Ausser dem DAC und dem Spannungswandler von 5 auf 3.3 Volt war im Vorgängerprojekt alle aktiven Komponenten gleich vorhanden. Diese Komponenten wurden aufgrund der früher (Kapitel \ref{sec:ausgangslage}) genannten Mängel gewählt und implementiert.
+Ausser dem DAC und dem Spannungswandler von 5 auf 3.3 Volt waren im Vorgängerprojekt alle aktiven Komponenten dieselben. Diese zusätzlichen Komponenten wurden aufgrund der früher (Kapitel \ref{sec:ausgangslage}) genannten Mängel gewählt und implementiert.
 
 \subsubsection{AD8331}
 
@@ -172,8 +172,8 @@ Der AD8331\cite{AD8331} ist ein Vorverstärker, der fixe Verstärkerstufen im In
 \end{figure}
 
 Der erste Verstärker erwartet ein asymmetrisches Signal, auch single-ended genannt, am Eingang und verstärkt es um 19 dB, versieht es mit einem Bias und gibt ein differentielles Signal zurück. Nach dieser Stufe sind alle Signale differentiell.
-Diese Stufe muss dann extern zum Dämpfungsglied geschaltet werden. Es wäre gut möglich hier noch extern ein Filter zuzuschalten. In dieser Anwendung wurden einfach 100n Kondensatoren dazwischen geschaltet um noch einmal DC zu blocken. % TODO überarbeiten
-Die Dämpfung des Dämpfungsgliedes ist stufenlos von 0 bis 48 dB übder den GAIN-Pin verstellbar. Hierfür wurde ein einfacher DAC verwendet. Dazu in Abschnitt \ref{subsec:MCP4706} mehr.
+Diese Stufe muss extern zum Dämpfungsglied geschaltet werden. Hier sind 100nF Kondensatoren zu beschalten welche DC-Restanteile eliminieren sollen.
+Die Dämpfung des Dämpfungsgliedes ist stufenlos von 0 bis 48 dB über den GAIN-Pin verstellbar. Hierfür wurde ein einfacher DAC verwendet. Dazu in Abschnitt \ref{subsec:MCP4706} mehr.
 Zuletzt wird ein Nachverstärker zugeschaltet der noch einmal 3.5 oder 15.5 dB verstärkt. Die Verstärkung kann über den HILO-Pin gewählt werden.
 Ausserdem kann die Ausgangsspannung auf ein Maximum begrenzt werden, was nützlich ist um weitere Bauteile vor Überspannung zu schützen.
 
@@ -195,19 +195,19 @@ Er hat ein GBWP von 4 Ghz was für das geplante SDR alleweil reicht, da nur Sign
 
 \subsubsection{LTC2252}
 Es wurde der LTC2252\cite{LTC2252} mit 12 Bit als A/D-Wandler gewählt. Erfahrungen aus dem Vorgängerprojekt haben gezeigt, dass höhere Auflösungen nicht einfach zu einem besseren Resultat führen. % TODO Hufi's Argumentation .
-Mit 105 MS/s ist er sicher genug schnell um Aliasing zu verhinden, wenn man annimmt dass bei einer Cutoffrequenz von 30 MHz das Eingangsfilter 9. Ordnung bei 50 Mhz um etwa 50dB gedämpft wird.
-Die Beschaltung wurde aus dem Application Note übernommen. Hier wurde viel Augenmerk darauf gelegt die Anweisungen im Application Note akribisch zu befolgen. Dies war dann insbesondere im Leiterplattendesign wichtig, was im Abschnitt \ref{subsec:Leiterplattendesign} genauer besprochen wird.
+Mit 105 MS/s ist er sicher genug schnell um Aliasing zu verhinden, wenn man annimmt, dass bei einer Cutoffrequenz von 30 MHz das Eingangsfilter 9. Ordnung bei 50 Mhz um etwa 50dB gedämpft wird.
+Die Beschaltung wurde aus dem Application Note übernommen. Hier wurde viel Augenmerk darauf gelegt die Anweisungen im Application Note akribisch zu befolgen. Dies war dann insbesondere im Leiterplattendesign wichtig, welches im Abschnitt \ref{subsec:Leiterplattendesign} genauer besprochen wird.
 
 \subsubsection{MCP4706}
 \label{subsec:MCP4706}
-Der MCP4706\cite{MCP4706} ist ein 8 bit Digital-Analog-Konverter. Er wird dazu genutzt die variable Verstärkung des AD8331 mittels einer Spannung einzustellen. Er wurde so konfiguriert dass er maximal ein Volt Ausgangsspannung hat, da dies die Grenze für den AD8331 ist. Gleichzeitig gehen zehn Skalierungsstufen verloren, da der AD8331 als Untergrenze 40 mV erwartet. Somit geht der zulässige Wertebereich für den DAC von 11 bis 255, was genügend dynamic Range sein sollte. Wieviel Verstärkung das Erhöhen des Wertes am DAC um eins zum Ergebnis hat sieht man in Gleichung \ref{eq:DAC_wert}.
+Der MCP4706\cite{MCP4706} ist ein 8-bit Digital-Analog-Konverter. Er wird dazu genutzt die variable Verstärkung des AD8331 mittels einer Spannung einzustellen. Er wurde so konfiguriert dass er maximal ein Volt Ausgangsspannung hat, da dies die Grenze für den AD8331 ist. Gleichzeitig gehen zehn Skalierungsstufen verloren, da der AD8331 als Untergrenze 40 mV erwartet. Somit geht der zulässige Wertebereich für den DAC von 11 bis 255, was genügend dynamic Range sein sollte. Wieviel Verstärkung das Erhöhen des Wertes am DAC um eins zum Ergebnis hat sieht man in Gleichung \ref{eq:DAC_wert}.
 
 \begin{equation}
     \Delta G_{dB} = 50 \frac{dB}{V} \cdot \frac{1}{2^8 - 1} = 0.196 dB
 \label{eq:DAC_wert}
 \end{equation}
 
-Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtiges Auswahlkriterium zusammen mit einem rauscharmen Ausgang. Der MCP4706 hat eine simple Resistorladder, das heisst, es werden je nach Ausgangswert Widerstände dazu- oder weggeschaltet. Damit sollte die Spannung am DAC-Ausgang praktisch keine Schwankungen erfahren, beziehungsweise ist es nur vom Rauschen der Spannungsversorgung abhängig, wie in \ref{eq:DAC_rauschen2} ersichtlich ist. Nimmt man an, dass $\Delta f \xrightarrow 0$, da die Verstärkung einmal zu beginn der Übermittlung eingestellt wird und dann statisch bleibt, so sieht man dass das Rauschen vernachlässigbar wird.
+Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtiges Auswahlkriterium; zusammen mit einem rauscharmen Ausgang. Der MCP4706 hat eine simple Resistorladder, das heisst, es werden je nach Ausgangswert Widerstände dazu- oder weggeschaltet. Damit sollte die Spannung am DAC-Ausgang praktisch keine Schwankungen erfahren, beziehungsweise sind sie nur vom Rauschen der Spannungsversorgung abhängig, wie in \ref{eq:DAC_rauschen2} ersichtlich ist. Nimmt man an, dass $\Delta f \xrightarrow 0$, da die Verstärkung einmal zu beginn der Übermittlung eingestellt wird und dann statisch bleibt, so sieht man dass das Rauschen vernachlässigbar wird.
 
 \begin{equation}
     U_N = \sqrt{4 \cdot k_B \cdot T \cdot \Delta f \cdot R},\,k_B = 1.38\cdot 10^{-23}\frac{J}{K},\,T = 300K,\,R = 210k\Omega
@@ -221,7 +221,7 @@ Der DAC ist über $I^2 C$ bequem ansteuerbar. Dies war eine wichtiges Auswahlkri
 
 \subsubsection{LP38798}
 Der LP38798 ist ein linearer Spannungsregler mit guter Rauschdämpfung und aktivem Rippelausgleich. Er wurde anstelle eines Schaltreglers eingesetzt, da Schaltregler aufgrund ihres Funktionsprinzips tendenziell Störsignale einbringen statt, wie im Falle von Linearregler, sie zu dämpfen.
-Dieser Regler im Speziellen ist auf tiefes Rauschen (5µV RMS) und einen hohen Versorgungsspannungsdurchgriff (PSRR) optimiert, weswegen er uns bei der Recherche ins Auge gestochen ist. Dies ist zur stabilen Stromversorgung der Verstärker auch bei Betrieb an einer weniger als optimalen Stromquelle von Bedeutung.
+Dieser Regler im Speziellen ist auf tiefes Rauschen (5µV RMS) und einen hohen Versorgungsspannungsdurchgriff (PSRR) optimiert, weswegen er uns bei der Recherche ins Auge gestochen ist. Dies ist zur stabilen Stromversorgung der Verstärker, auch bei Betrieb an einer weniger als optimalen Stromquelle von Bedeutung.
 Weitere Kenndaten wie Chipgrösse, Preis und Effizienz waren bei der Auswahl von sekundärer Wichtigkeit da der Einsatz im Rahmen des Projekts auf Prototypen zur stationären Verwendung beschränkt ist.
 
 \begin{figure}[H]
@@ -293,12 +293,12 @@ Die beiden Spannungsnetze werden wie folgt verwendet.
 \clearpage
 \subsection{Leiterplattendesign}
 \label{subsec:Leiterplattendesign}
-Die Leiterplatte wurde so ausgelegt, dass alle Komponenten (VGA, LNA, ADC) des Frontends mehr oder weniger abgekapselt auf einem Board sind. Jede Komponente kann zu der weiterführenden benachbarten geschaltet werden. Wenn die Komponenten nicht gechaint werden, so können sie am Input und am Output an einen Balun angeschlossen werden. So können alle Komponenten einzeln gemessen werden. Die Baluns sind notwendig damit die differentiellen Komponenten korrekt terminiert werden und das Signal in ein single-ended Signal umgewandelt wird. Diese zweite Eigenschaft ist voraussetzung um einen VNA anschliessen zu können.
+Die Leiterplatte wurde so ausgelegt, dass alle Komponenten (VGA, LNA, ADC) des Frontends mehr oder weniger abgekapselt auf einem Board sind. Jede Komponente kann zu der weiterführenden benachbarten geschaltet werden. Wenn die Komponenten nicht zusammengeschaltet werden, so können sie am Input und am Output an einen Balun angeschlossen werden. So können alle Komponenten einzeln gemessen werden. Die Baluns sind notwendig damit die differentiellen Komponenten korrekt terminiert werden und das Signal in ein single-ended Signal umgewandelt wird. Diese zweite Eigenschaft ist voraussetzung um einen VNA anschliessen zu können.
 
 Wichtige Änderungen zum Vorgängerprojekt bestehen hier vor allem darin, dass die Groundplane optimiert wurde und die Komponenten näher zum jeweiligen Chip angeordnet wurden.
 
 \subsubsection*{Groundplane}
-Es ist wichtig dass in einer HF-Anwendung eine möglichst unbeschädigte Groundplane vorliegt. Zum einen braucht es ein fixes Referenzpotential welches sich möglichst nicht verschieben soll. Bei mehr Masse ist das einfacher, da die Ströme keine langen Wege nehmen müssen.
+Es ist wichtig dass in einer HF-Anwendung eine möglichst unbeschädigte Groundplane vorliegt. Zudem braucht es ein fixes Referenzpotential welches sich möglichst nicht verschieben soll. Bei mehr Masse ist das einfacher, da die Ströme keine langen Wege nehmen müssen.
 
 \subsubsection*{Leiterbahnen}
 Leiterbahnen sollten so kurz wie möglich gehalten werden. Zudem sollten symmetrische Signale auch physikalisch so gehalten werden, wenn sie über längere Distanzen geführt werden. Das heisst sie sollten geometrisch nahe beieinander gehalten und symmetrisch geroutet werden. 
@@ -306,18 +306,18 @@ Leiterbahnen sollten so kurz wie möglich gehalten werden. Zudem sollten symmetr
 \subsubsection*{AD8331}
 Im Datasheet zum AD8331 gibt es einige Tipps wie das Layouten gelingt. So soll Dead Copper vermieden werden und stattdessen mit Ground verbunden werden.
 Die externen Komponenten an den Pins LON und LOP sowie an den Pins VOL und VOH sollten so nahe wie möglich am Chip platziert werden um Lodading-Effekte zu vermeiden.
-Zudem sollten speziell die Verbindungen von LON und LOP zu VIN und VIP möglichst kurz gehalten werden um ungewünschte Effekte zu vermeiden. Dazwischen hat es einen externen Coupling-Kondensator, da danach das Signal mit einem Bias versehen wird um es in ein differentielles Signal zu erhalten.
+Zudem sollten speziell die Verbindungen von LON und LOP zu VIN und VIP möglichst kurz gehalten werden um ungewünschte Effekte zu vermeiden. Dazwischen hat es einen externen Coupling-Kondensator, da danach das Signal mit einem Bias versehen wird um es in ein differentielles Signal zu wandeln.
 
 \subsubsection*{ISL55210}
-Beim ISL55210 wurden lediglich die üblichen wichtigen Design-Richtlinien befolgt. 
+Beim ISL55210 wurden lediglich die üblichen, wichtigen Design-Richtlinien befolgt. 
 
 \subsubsection*{LTC2252}
-Der ADC ist am heikelsten zu layouten. Er hat digitale sowie analoge Komponenten. Diese müssen strikt getrennt werden, um zu vermeiden, dass digitale Signale welche viel Strom brauchen die Referenzlevel für den analogen Teil verfälschen. Es sollen Querströme vermieden werden!
-Hier war schon beim Vorgängerprojekt eine Diskussion, wie das Groundlayout auszusehen hat. Dazu gibt es verschiedene Artikel insbesondere einen Artikel von Analog Devices \cite{StayingWellGrounded2012} und natürlich das Datasheet des LTC2252\cite{LTC2252} welche Hinweise geben, wie das Layout zu gestalten sei. Es gibt verschiedene Ansätze wie man vorgehen sollte. Manche bevorzugen zwei komplett getrennte Groundplanes welche an einem Punkt zusammengeführt werden und manche bevorzugen es die Groundplane als ein Ganzes zu behalten. Sie sind sich alle in einem Punkt einig: Oftmals wird falsch verstanden zu welchem Ground bzw zu welcher Versorgung ein Pin der mit DGND (digital Ground) angeschrieben ist nun gehört. So gehört dieser Pin nicht an ein digitales Referenzpotential, sondern an ein analoges! Wieso dem genau so ist, ist wunderbar erklärt in \cite{StayingWellGrounded2012}, wird hier aber nicht noch einmal aufgeführt.
-Es ist unter jeden Umständen zu vermeiden den DGND des ADCs an einen digitalen Ground zu hängen! Des weiteren ist die Verbindung zwischen AGND und DGND möglichst kurz zu halten um weitere parasitäre Effekte zu vermeiden.
-Es wird im Datasheet explizit erwähnt dass der Ground unter und um den Chip aus einer ungestörten Plane besteht. Es sind eher 4-Layer+ empfohlen. Es wurde bei diesem Projekt versucht so gut wie möglich mit 2 Layern auszukommen.
+Der ADC ist am heikelsten zu layouten. Er hat digitale, sowie analoge Komponenten. Diese müssen strikt getrennt werden, um zu vermeiden, dass digitale Signale welche viel Strom brauchen die Referenzlevel für den analogen Teil verfälschen. Es sollen Querströme vermieden werden!
+Hier war schon beim Vorgängerprojekt eine Diskussion, wie das Groundlayout auszusehen hat. Dazu gibt es verschiedene Artikel, insbesondere einen Artikel von Analog Devices \cite{StayingWellGrounded2012} und natürlich das Datasheet des LTC2252\cite{LTC2252}, welche Hinweise geben, wie das Layout zu gestalten sei. Es gibt verschiedene Ansätze wie man vorgehen soll. Manche bevorzugen zwei komplett getrennte Groundplanes welche an einem Punkt zusammengeführt werden und manche bevorzugen es die Groundplane als ein Ganzes zu behalten. Sie sind sich alle in einem Punkt einig: Oftmals wird falsch verstanden zu welchem Ground ein Pin der mit DGND (digital ground) angeschrieben ist nun gehört. So gehört dieser Pin nicht an ein digitales Referenzpotential, sondern an ein analoges! Wieso dem genau so ist, ist wunderbar erklärt in \cite{StayingWellGrounded2012} und wird hier aber nicht noch einmal aufgeführt.
+Es ist unter allen Umständen zu vermeiden, den DGND des ADCs an einen digitalen Ground zu hängen! Des Weiteren ist die Verbindung zwischen AGND und DGND möglichst kurz zu halten, um weitere parasitäre Effekte zu vermeiden.
+Es wird im Datasheet explizit erwähnt, dass der Ground unter und um den Chip aus einer ungestörten Plane bestehen soll. Es sind eher 4-Layer+ empfohlen. Es wurde bei diesem Projekt versucht so gut wie möglich mit 2 Layern auszukommen.
 
-Im LTC2252 Datasheet wird zudem erwähnt, dass digitale und analoge Signale gut getrennt werden müssen. Diese sollten sich unter keinen Umständen in die Quere kommen um parasitäre Koplungseffekte zu vermeiden. Dies macht einem der LTC2252 zum Glück sehr leicht, da die Signale im Pinout schon sinnvoll getrennt angeordnet sind.
+Im LTC2252 Datasheet wird zudem erwähnt, dass digitale und analoge Signale räumlich gut getrennt werden müssen. Diese sollten sich unter keinen Umständen in die Quere kommen, um parasitäre Koplungseffekte zu vermeiden. Dies macht einem der LTC2252 zum Glück sehr leicht, da die Signale im Pinout schon sinnvoll getrennt angeordnet sind.
 Die Groundplane wurde hier so eingeschnitten, dass digitale Signale nicht über den analogen Bereich zurücklaufen. Dies ist in Grafik \ref{fig:groundplane_bsp} sehr schön zu sehen.
 
 \begin{figure}[H]
@@ -382,4 +382,4 @@ Die Groundplane wurde hier so eingeschnitten, dass digitale Signale nicht über 
 \end{center}
 \end{figure}
 
-Speziell erwähnt im Datasheet wird vorallem der 100nF Kondensator zwischen REFH und REFL. Er darf sich nicht weiter als 1.5 mm vom Chip weg befinden. Er wird speziell aufgeführt und zum parallelen 2.2uF Kondensator wird gesagt dass dieser weiter weg sein kann, was annehmen lässt dass dies wirklich wichtig ist.
+Speziell erwähnt im Datasheet wird vorallem der 100nF Kondensator zwischen REFH und REFL. Er darf sich nicht weiter als 1.5 mm vom Chip weg befinden. Er wird speziell aufgeführt wobei zum parallelen 2.2uF Kondensator wird gesagt, dass dieser weiter weg sein kann, was annehmen lässt, dass der 100nF Kondensator wirklich wichtig ist.
