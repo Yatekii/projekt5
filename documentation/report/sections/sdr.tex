@@ -69,9 +69,9 @@ Der Fokus dieses Projekts liegt auf dem ersten Teil, dem analogen Frontend. Es i
 \begin{center}
     \begin{tikzpicture}[node distance = 2cm, auto]
 		\node [sdrelement-ext] (antenne) {Antenne};
-		\node [sdrelement-analog, right of=antenne, node distance=3cm] (prefilter) {Tiefpassfilter};
-		\node [sdrelement-analog, right of=prefilter, node distance=4cm] (amp) {Mehrstufiger Verstärker};
-		\node [sdrelement-hybrid, right of=amp, node distance=5cm] (adc) {Analog-Digital-Konverter};
+		\node [sdrelement-analog, right of=antenne, node distance=2.5cm] (prefilter) {Tiefpassfilter};
+		\node [sdrelement-analog, right of=prefilter, node distance=3.8cm] (amp) {Mehrstufiger Verstärker};
+		\node [sdrelement-hybrid, right of=amp, node distance=4.8cm] (adc) {Analog-Digital-Konverter};
 		\path [sdrpointer] (antenne) -- (prefilter);
 		\path [sdrpointer] (prefilter) -- (amp);
 		\path [sdrpointer] (amp) -- (adc);
