@@ -242,3 +242,20 @@ In dieser Grafik kann ohne weiteres erkannt werden, dass im ISL55210 ungewollt $
 \end{figure}
 
 Wie gut erkannt werden kann ist der Fehler der am ISL55210 entsteht grösser als derjenige, der am AD8331 entsteht. Jedoch ist der Fehler über dem ISL55210 mit weniger als 1.5 dB immernoch sehr klein. Die Abweichung zum erwarteten Wert entsteht wohl dadurch, dass zum einen die Terminierung mit 270 $\Omega$ zwischen AD8331 und ISL55210 zu hoch gewählt ist (250 $\Omega$ wären korrekt) und der Messadapter mit 250 $\Omega$, welche für den AD8331 benötigt wurden, ebenfalls einen zu hohen Widerstand hat (200 $\Omega$ wären korrekt). Wahrscheinlich der wichtigste Punkt ist aber dass die Feedbackwiderstände am AD8331 nicht eine so hohe Genauigkeit haben, dass die Effektive Verstärkung variiert.
+
+\subsection{Eingangsfilter}
+Um genauere Untersuchung der Effekte zu ermöglichen, ist das Filter abgekoppelt vom Rest der Schaltung aufgebaut und kann mit ihr mittels BNC-Kabel verbunden werden. Dies dient der Eliminierung von Fehlerquellen und vereinfacht das einzelne Ausmessen.
+
+Es konnte das im Vergleich mit der Vorgängerarbeit das gleiche Problem bei Frequenzen ab circa 100MHz bestätigt werden. Entgegen der Simulation verringert sich die Dämpfung auf unter 20dB bei 2GHz.
+
+Es wurden Hinweise darauf gefunden, dass parasitäre und umgebungsbedingte Faktoren Einfluss haben. Insbesondere haben die BNC-Steckerbuchsen keine gute Verbindung zur Masse. Dies zeigt sich durch Verzerrungen im Frequenzgang wenn die Aussenleiter der Ein- und Ausgangsleitungen nicht direkt miteinander verbunden sind.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[clip,scale=0.4]{data/images/messungen/lowpass}
+		\caption{Messung und Simulation des Tiefpass}
+		\label{fig:lowpass-plot}
+	\end{center}
+\end{figure}
+
+Die Messpunkte der roten Kurve sind verglichen zur violetten Kurve über den zehnfachen Frequenzbereich verteilt daher weniger aussagekräftig. Die höhere Auflösung der violetten Kurve ist zur Interpretation der kritischen Stellen wichtig.

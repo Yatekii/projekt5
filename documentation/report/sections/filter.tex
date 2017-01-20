@@ -1,4 +1,4 @@
-Beim Eingangsfilter handelt es sich um ein Butterworth-Tiefpassfilter in Cauer-Topologie. Der Aufbau und Werte der Bauteile wurden vom Vorgängerprojekt übernommen. Dort wurde entgegen der Simulationen eine Verringerung der Dämpfung über 100MHz beobachtet.
+Beim Eingangsfilter handelt es sich um ein Butterworth-Tiefpassfilter in Cauer-Topologie. Der Aufbau und Werte der Bauteile wurden vom Vorgängerprojekt übernommen. Theoretisch ist dieses Filter sehr gut für diesen Zweck geeignet, doch wurden dort entgegen der Simulationen eine Verringerung der Dämpfung über 100MHz beobachtet. Das Beibehalten des Filters ermöglicht die weitere Untersuchung dieses Effekts.
 
 \begin{figure}[H]
 	\begin{center}
@@ -47,19 +47,3 @@ Beim Eingangsfilter handelt es sich um ein Butterworth-Tiefpassfilter in Cauer-T
 		\label{fig:lowpass}
 	\end{center}
 \end{figure}
-
-Um genauere Untersuchung der Effekte zu ermöglichen, ist das Filter abgekoppelt vom Rest der Schaltung aufgebaut und kann mit ihr mittels BNC-Kabel verbunden werden. Dies dient der Eliminierung von Fehlerquellen und vereinfacht das einzelne Ausmessen.
-
-Es konnte das im Vergleich mit der Vorgängerarbeit das gleiche Problem bei Frequenzen ab circa 100MHz bestätigt werden. Entgegen der Simulation verringert sich die Dämpfung auf unter 20dB bei 2GHz.
-
-Es wurden Hinweise darauf gefunden, dass parasitäre und umgebungsbedingte Faktoren Einfluss haben. Insbesondere haben die BNC-Steckerbuchsen keine gute Verbindung zur Masse. Dies zeigt sich durch Verzerrungen im Frequenzgang wenn die Aussenleiter der Ein- und Ausgangsleitungen nicht direkt miteinander verbunden sind.
-
-\begin{figure}[H]
-	\begin{center}
-		\includegraphics[clip,scale=0.4]{data/images/messungen/lowpass}
-		\caption{Messung und Simulation des Tiefpass}
-		\label{fig:lowpass-plot}
-	\end{center}
-\end{figure}
-
-Die Messpunkte der roten Kurve sind verglichen zur violetten Kurve über den zehnfachen Frequenzbereich verteilt daher weniger aussagekräftig. Die höhere Auflösung der violetten Kurve ist zur Interpretation der kritischen Stellen wichtig.
