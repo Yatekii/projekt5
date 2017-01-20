@@ -1,28 +1,26 @@
-% BOTH
-
 Hauptziel der Arbeit war es alle Komponenten des AFEs gut zu vermessen und ihre Funktionalität zu verifizieren.
 
 \subsection{Setup \& Software}
-Zum Messen wurden verschiedenste Gerätschaften verwendet. Manche wurden zur Automatisierung der Messungen per Skript angesteuert. Alle Geräte sind im Folgenden kurz erwähnt und beschrieben, da die Ansteuerung direkt mit deren Funktionsumfang zusammenhängt.
+Zum Messen wurden verschiedenste Gerätschaften verwendet. Manche konnten zur Automatisierung der Messungen per Skript angesteuert werden. Alle Geräte sind im Folgenden kurz erwähnt und beschrieben, da die Ansteuerung direkt mit deren Funktionsumfang zusammenhängt.
 
 \subsubsection*{Hauptlabornetzgerät}
 Hier handelt es sich um ein gewöhnliches Labornetzgerät, welches sich leider nicht fernsteuern lässt. Es speist bei den Versuchen lediglich das AFE mit 5V und übernimmt keine weitere Funktion. Es taugt für diese Funktion gut.
 
 \subsubsection*{LeCroy wavesurfer 3054}
-Das Oszilloskop ist hier um die Signalen genauer zu beobachten. Für genaue Messungen der Verstärkung und Eingangsimpedanz der Schaltung wird zwar ein VNA verwendet, jedoch misst dieser immer nur einen RMS-Wert. Um genaue Signalverläufe zu beobachen und zum Beispiel zu ermitteln ob der Sinus vom Eingang am Ausgang überhaupt noch ein Sinus ist, wird das Oszilloskop verwendet. Es wird bei Bedarf per Hand bedient und wurde nicht per Skript angesteuert.
+Das Oszilloskop ist hier um die Signalen genauer zu beobachten. Für genaue Messungen der Verstärkung und Eingangsimpedanz der Schaltung wird zwar ein VNA verwendet, jedoch misst dieser immer nur einen RMS-Wert. Um genaue Signalverläufe zu beobachten und zum Beispiel zu ermitteln ob der Sinus vom Eingang am Ausgang überhaupt noch ein Sinus ist, wird das Oszilloskop verwendet. Es wird bei Bedarf per Hand bedient und wurde nicht per Skript angesteuert.
 
 \subsubsection*{Arduino Due}
-Da zur Ansteuerung des verwendeten DACs $I^2C$ verwendet wird, war eine Schnittstelle die $I^2C$ spricht unabdingbar. Statt bereits VHDL für das FPGA zu schreiben und eine weitere Baustelle anzufagen, wurde ein Arduino verwendet. Es ist relativ einfach, diesen dazu zu bringen, $I^2C$ zu sprechen. Die Spannung des DACs kann somit vor der Messung eingestellt werden. Danach kann ungestört gemessen werden, ohne dass der Bus dazwischenplappert und die Messungen verfälscht. Das ganze kann vom PC aus per UART gesteuert werden.
+Da zur Ansteuerung des verwendeten DACs $I^2C$ verwendet wird, war eine Schnittstelle die $I^2C$ spricht unabdingbar. Statt bereits VHDL für das FPGA zu schreiben und eine weitere Baustelle zu eröffnen, wurde ein Arduino verwendet. Es ist relativ einfach, diesen dazu zu bringen, $I^2C$ zu sprechen. Die Spannung des DACs kann somit vor der Messung eingestellt werden. Danach kann ungestört gemessen werden, ohne dass der Bus dazwischenplappert und die Messungen verfälscht. Das ganze kann vom PC aus per UART gesteuert werden.
 Leider wurde nach ersten Versuchen die Vermutung angestellt dass der DAC zusätzliches Rauschen mit sich bringt, weswegen im weiteren Verlauf der Messungen mit einem präzisen Labornetzgerät agiert wurde.
 
 \subsubsection*{Aim-TTi PL303}
 Dieses Labornetzgerät kann per PC angesteuert werden. Hier war wichtig, dass das Netzgerät Spannungen auf Milivolt genau einstellen kann.
 Das Ansteuern per PC geschieht über das Netzwerk oder UART. Das Gerät wird über beide Schnittstellen mit LXI angesteuert. LXI ist ein textbasiertes Protokoll und damit menschenleserlich und einfach zu implementieren. Es wurde UART gewählt, da es per Netzwerk Probleme mit der Firewall gab. Dies ist möglich obwohl LXI eigentlich für LAN gedacht ist.
 
-Zur Ansteuerung wurden einfache Python-Klassen geschrieben, welche die Parameter der Messgeräte lesen und setzen können. Das Python-Objekt welches per Gerät instanziert wird, hat dabei keinerlei Zustand. Jegliche Zustände werden auf dem Gerät selber verwaltet. Somit können auch jederzeit am Gerät selber Einstellungen vorgenommen werden und das Python-Interface kriegt diese ohne Schwierigkeiten mit und stellt diese angenehm über Variabeln wie gewohnt zur Verfügung.
+Zur Ansteuerung wurden einfache Python-Klassen geschrieben, welche die Parameter der Messgeräte lesen und setzen können. Das Python-Objekt welches per Gerät instanziert wird, hat dabei keinerlei Zustand. Jegliche Zustände werden auf dem Gerät selber verwaltet. Somit können auch jederzeit am Gerät selber Einstellungen vorgenommen werden und das Python-Interface kriegt diese ohne Schwierigkeiten mit und stellt diese angenehm über Variablen wie gewohnt zur Verfügung.
 
 \subsubsection*{Agilent E5071B}
-Der Vector Network Analyzer (VNA) wird dazu verwendet ein Signal mit bekanntem Pegel und Frequenz in ein Zeitor (Mehrtor ist auch möglich, aber in diesem Falle nicht gewünscht) zu geben und am Eingang, sowie am Ausgang zu messen, wieviel von dem Signal noch übrig ist. So kann leicht das ganze System vermessen werden.
+Der Vector Network Analyzer (VNA) wird dazu verwendet ein Signal mit bekanntem Pegel und Frequenz in ein Zweitor (Mehrtor ist auch möglich, aber in diesem Falle nicht gewünscht) zu geben und am Eingang, sowie am Ausgang zu messen, wie viel von dem Signal noch übrig ist. So kann leicht das ganze System vermessen werden.
 
 Zum Glück konnte für die Messungen ein sehr gutes Gerät von HP verwendet werden. Es hat ein sehr einfaches Benutzerinterface und lässt sich zudem per PC ansteuern. Hier gibt es mehrere Varianten wie dies geschehen kann. Es wurde wieder UART und LXI gewählt. Somit gab es nicht viel umzustellen, um auch den VNA anzusprechen. Natürlich wurden nur Python-Schnittstellen für die Funktionen, welche auch verwendet wurden, implementiert um nicht den Zeitrahmen zu sprengen.
 
@@ -30,7 +28,7 @@ Das verwendete Gerät kann von 300kHz bis 8.5GHz messen und ist daher bestens ge
 
 \subsection{Erste Messungen}
 
-Mit einer ersten bestückten Leiterplatte wurden daher mit dem Oszilloskop erste Messungten durchgeführt, welche eine generelle Funktionstüchtigkeit bezeugten. Diese war gar nicht zufriedenstellend.
+Mit einer ersten bestückten Leiterplatte wurden daher mit dem Oszilloskop erste Messungen durchgeführt, welche eine generelle Funktionstüchtigkeit bezeugten. Diese war gar nicht zufriedenstellend.
 
 \begin{figure}[H]
 \begin{center}
@@ -120,7 +118,7 @@ Eigentlich wären zur korrekten Terminierung und Umwandlung in ein single-ended 
 \end{figure}
 
 Damit sieht der AD8331 die gewünschten 250 $\Omega$ auf beiden Ausgängen des differentiellen Signales. Zugleich sieht der VNA dabei seine gewünschten 50 $\Omega$.
-Diese Lösung profitiert zwar nicht von der Störungseliminierung eines differentiellen Signales, ist jedeoch für den Rahmen dieses Projektes mehr als ausreichend.
+Diese Lösung profitiert zwar nicht von der Störungseliminierung eines differentiellen Signales, ist jedoch für den Rahmen dieses Projektes mehr als ausreichend.
 
 Was jetzt noch beachtet werden muss, ist der Spannungsteiler, der durch diese Schaltung am Ausgang vorgeschaltet wird.
 So müssen Messresultate jeweils mit $\frac{1}{a}$ multipliziert werden wobei $a$ in Gleichung \ref{eq:a_AD8331} gegeben ist.
@@ -137,8 +135,8 @@ Dieser Wert hat noch einen kleinen Fehler, da Widerstände nur endlich genau sin
     \label{eq:fehler_a_AD8331}
 \end{equation}
 
-Mit der korrekten Korrektur des gemessenen Wertes wurde nun je eine kleine Messreihe durchgeführt. Diese ist in Grafik \ref{fig:kaputtes_AFE} zu sehen. Wie man hier unleicht erkennen kann gibt es einen signifikanten Unterschied je nach Terminierung.
-Leider ist her auch unschwer zu erkennen, dass der HI/LO Pin keinerlei Einfluss auf die Verstärkung hat. Während dies bei ersten Messungen noch funktionierte, ist dies bei diesen Messungen nicht mehr funktional. Es scheint als wäre es ein Defekt an der Hardware.
+Mit der korrekten Korrektur des gemessenen Wertes wurde nun je eine kleine Messreihe durchgeführt. Diese ist in Grafik \ref{fig:kaputtes_AFE} zu sehen. Wie man hier unschwer erkennen kann gibt es einen signifikanten Unterschied je nach Terminierung.
+Leider ist her auch unschwer zu erkennen, dass der HI/LO Pin keinerlei Einfluss auf die Verstärkung hat. Während dies bei ersten Messungen noch funktionierte, ist dies in diesem Fall nicht mehr funktional. Es scheint als wäre es ein Defekt an der Hardware.
 
 \begin{figure}[H]
 \begin{center}
@@ -153,7 +151,7 @@ Die ersten Messungen sind aus diesem Grunde nicht mehr zu verwenden, ausser zur 
 \begin{figure}[H]
 \begin{center}
     \includegraphics[width=1\textwidth]{data/images/messungen/ganzes_AFE}
-    \caption{Erste verifikation des A8331.}
+    \caption{Erste Verifikation des A8331.}
     \label{fig:ganzes_AFE}
 \end{center}
 \end{figure}
@@ -219,7 +217,7 @@ Bei dieser Kurve gibt es einen unerwarteten Abfall bei 2 MHz abwärts, wofür in
 
 Ein dritter Punkt ist, dass der Verstärker einen unerwarteten Abfall hat je höher die Frequenz ist. Laut Datasheet sollte der Verstärker locker bis 100MHz um 28.5 dB verstärken. Die Kurve müsste relativ gerade ausfallen. Erst war der Gedanke da, dass es nur ein Fehler in diesem Projekt ist. Wie sich aber zeigt bestand dieses Verhalten schon im Vorgängerprojekt, wurde jedoch nicht explizit bemerkt oder wenigstens nicht erwähnt.
 
-Erst viel zu spät wurde dann wenigstens noch bemerkt, dass der AD8331 vollig falsch belastet wurde, da nach der Einzelmessung des AD8331 die Widerstände R7 und R8 auf 0 $\Omega$ belassen wurden, statt diese korrekterweise auf 250 $\Omega$ anzupassen. Dies ist wichtg damit der AD8331 keine zu grosse Last hat, welche er nicht zu treiben vermag und dann komische Dinge tut.
+Erst viel zu spät wurde dann wenigstens noch bemerkt, dass der AD8331 völlig falsch belastet wurde, da nach der Einzelmessung des AD8331 die Widerstände R7 und R8 auf 0 $\Omega$ belassen wurden, statt diese korrekterweise auf 250 $\Omega$ anzupassen. Dies ist wichtig damit der AD8331 keine zu grosse Last hat, welche er nicht zu treiben vermag und dann komische Dinge tut.
 
 Nach dem Wechsel der Widerstände waren die Resultate ganz akzeptabel!
 
@@ -241,7 +239,7 @@ In dieser Grafik kann ohne Weiteres erkannt werden, dass im ISL55210 ungewollt $
 \end{center}
 \end{figure}
 
-Wie gut erkannt werden kann, ist der Fehler der am ISL55210 entsteht grösser als derjenige, der am AD8331 entsteht. Jedoch ist der Fehler über dem ISL55210 mit weniger als 1.5 dB immernoch sehr klein. Die Abweichung zum erwarteten Wert entsteht wohl dadurch, dass zum einen die Terminierung mit 270 $\Omega$ zwischen AD8331 und ISL55210 zu hoch gewählt ist (250 $\Omega$ wären korrekt) und der Messadapter mit 250 $\Omega$, welche für den AD8331 benötigt wurden, ebenfalls einen zu hohen Widerstand hat (200 $\Omega$ wären korrekt). Wahrscheinlich der wichtigste Punkt ist aber dass die Feedbackwiderstände am AD8331 nicht eine so hohe Genauigkeit haben, sodass die Effektive Verstärkung variiert.
+Wie gut erkannt werden kann, ist der Fehler der am ISL55210 entsteht grösser als derjenige, der am AD8331 entsteht. Jedoch ist der Fehler über dem ISL55210 mit weniger als 1.5 dB immer noch sehr klein. Die Abweichung zum erwarteten Wert entsteht wohl dadurch, dass zum einen die Terminierung mit 270 $\Omega$ zwischen AD8331 und ISL55210 zu hoch gewählt ist (250 $\Omega$ wären korrekt) und der Messadapter mit 250 $\Omega$, welche für den AD8331 benötigt wurden, ebenfalls einen zu hohen Widerstand hat (200 $\Omega$ wären korrekt). Wahrscheinlich der wichtigste Punkt ist aber dass die Feedbackwiderstände am AD8331 nicht eine so hohe Genauigkeit haben, sodass die Effektive Verstärkung variiert.
 
 \subsection{Eingangsfilter}
 Es konnte das, im Vergleich mit der Vorgängerarbeit, gleiche Problem bei Frequenzen ab circa 100MHz bestätigt werden. Anders als bei der Simulation, verringert sich die Dämpfung auf unter 20dB bei 2GHz.
