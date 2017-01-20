@@ -2,7 +2,47 @@ Beim Eingangsfilter handelt es sich um ein Butterworth-Tiefpassfilter in Cauer-T
 
 \begin{figure}[H]
 	\begin{center}
-		\includegraphics[clip,scale=0.4]{data/images/lowpass}
+		\tikzset{font={\fontsize{8pt}{12}\selectfont}}
+		\begin{circuitikz}[scale=0.5]
+
+			\draw (-1,2)
+			node[ocirc]{}
+			to[short] (1,2)
+			to[L=$307nH$] (3,2)
+			to[short] (5, 2)
+			to[L=$380nH$] (7,2)
+			to[short] (9, 2)
+			to[L=$380nH$] (11,2)
+			to[short] (13, 2)
+			to[L=$307nH$] (15,2)
+			to[short] (17, 2) node[ocirc]{};
+
+			\draw (0, 2)
+			to [short] (0, 1)
+			to [C=$82pF$] (0, -1)
+			node[rground]{};
+
+			\draw (4, 2)
+			to [short] (4, 1)
+			to [C=$180pF$] (4, -1)
+			node[rground]{};
+
+			\draw (8, 2)
+			to [short] (8, 1)
+			to [C=$180pF$] (8, -1)
+			node[rground]{};
+
+			\draw (12, 2)
+			to [short] (12, 1)
+			to [C=$180pF$] (12, -1)
+			node[rground]{};
+
+			\draw (16, 2)
+			to [short] (16, 1)
+			to [C=$82pF$] (16, -1)
+			node[rground]{};
+
+		\end{circuitikz}
 		\caption{Schema des Tiefpassfilters}
 		\label{fig:lowpass}
 	\end{center}
