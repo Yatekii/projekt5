@@ -39,9 +39,9 @@ draw,
 ]
 
 
-Die grundlegende Idee von Software Defined Radios ist die Digitalisierung möglichst vieler Bestandteile von Funkempfängern und Sendern. Verglichen mit herkömmlichen analogen Sendern und Empfängern sind SDR relativ jung da sie erst mit moderner digitaler Schaltungstechnik möglich wurden. Es gibt sie sowohl einzeln als Sender oder Empfänger als auch kombiniert. Dieses Projekt beschränkt sich auf den Empfängerteil, ein Sender wäre mögliche zukünftige Erweiterung.
+Die grundlegende Idee von Software Defined Radios ist die Digitalisierung möglichst vieler Bestandteile von Funkempfängern und Sendern. Verglichen mit herkömmlichen analogen Sendern und Empfängern sind SDR relativ jung, da sie erst mit moderner digitaler Schaltungstechnik möglich wurden. Es gibt sie sowohl einzeln als Sender oder Empfänger, als auch kombiniert. Dieses Projekt beschränkt sich auf den Empfängerteil, ein Sender wäre eine mögliche zukünftige Erweiterung.
 
-Mittels des diesem Projekts zugrunde liegenden Software Defined Radios kann der allgemeine Aufbau eines solchen Empfängers mit Grafik \ref{fig:SDR_aufbau} veranschaulicht werden.
+Mittels des diesem Projekts zugrunde liegenden Software Defined Radios, kann der allgemeine Aufbau eines solchen Empfängers mit Grafik \ref{fig:SDR_aufbau} veranschaulicht werden.
 
 \begin{figure}[H]
 \begin{center}
@@ -61,7 +61,7 @@ Mittels des diesem Projekts zugrunde liegenden Software Defined Radios kann der 
 \end{center}
 \end{figure}
 
-Die Kette beginnt mit einer Antenne, welche beliebige Signale empfängt. Diese werden in einem ersten Schritt gemäss der Leistungsvermögen der folgenden Elektronik gefiltert und verstärkt. Hierbei geht es insbesondere um das Entfernen von nicht verarbeitbaren Frequenzen und dem Verstärken von relevanten aber sehr schwachen Signalen. Mittels eines schnellen Analog-Digital-Wandler wird das Signal anschliessend abgetastet und an die digitale Signalverarbeitung übergeben. Diese ist typischerweise als FPGA oder mittels spezialisierten Chips realisiert. Aufgrund der parallelisierbarkeit der Prozesse in FPGAs kann eine sehr hohe Datenrate erreicht werden, was für diese Anwendung zwingend ist. Beispiele für hier stattfindende Signalverarbeitung ist die Demodulation von eingehenden Daten und wo möglich die dazugehörige Fehlererkennung. Je nach Anwendungszweck werden die verarbeiteten Daten einem Benutzer direkt angezeigt oder digital abgelegt um von einer Software verwendet zu werden.
+Die Kette beginnt mit einer Antenne, welche beliebige Signale empfängt. Diese werden in einem ersten Schritt gemäss der Leistungsvermögen der folgenden Elektronik gefiltert und verstärkt. Hierbei geht es insbesondere um das Entfernen von nicht verarbeitbaren Frequenzen und das Verstärken von relevanten, aber sehr schwachen Signalen. Mittels eines schnellen Analog-Digital-Wandler wird das Signal anschliessend abgetastet und an die digitale Signalverarbeitung übergeben. Diese ist typischerweise als FPGA oder mittels spezialisierten Chips realisiert. Aufgrund der Parallelisierbarkeit der Prozesse in FPGAs, kann eine sehr hohe Datenrate erreicht werden, was für diese Anwendung zwingend ist. Beispiele für die hier stattfindende Signalverarbeitung ist die Demodulation von eingehenden Daten und wo möglich die dazugehörige Fehlererkennung. Je nach Anwendungszweck werden die verarbeiteten Daten einem Benutzer direkt angezeigt oder digital abgelegt um von einer Software verwendet zu werden.
 
 Der Fokus dieses Projekts liegt auf dem ersten Teil, dem analogen Frontend. Es ist, einschliesslich des Analog-Digital-Wandlers, wie in Grafik \ref{fig:AFE_aufbau} aufgebaut:
 
@@ -81,5 +81,5 @@ Der Fokus dieses Projekts liegt auf dem ersten Teil, dem analogen Frontend. Es i
 \end{center}
 \end{figure}
 
-Die Antenne kann frei gewählt werden. Aktive Antennen benötigen zusätzliche Hardware. Das Signal der Antenne wird durch ein Tiefpassfilter mit Grenzfrequenz 30MHz geleitet. Dies eliminiert die vom Empfänger nicht verarbeitbaren Frequenzen. Dies erhöht die Zuverlässigkeit da bestimmte Frequenzbänder, beispielsweise UKW-Rundfunk, in manchen Gebieten stark genug sind um den Empfang des restlichen Spektrums zu beeinträchtigen.
+Die Antenne kann frei gewählt werden. Aktive Antennen benötigen zusätzliche Hardware. Das Signal der Antenne wird durch ein Tiefpassfilter mit Grenzfrequenz 30MHz geleitet. Dies eliminiert die vom Empfänger nicht verarbeitbaren Frequenzen. Dies erhöht die Zuverlässigkeit, da bestimmte Frequenzbänder, beispielsweise UKW-Rundfunk, in manchen Gebieten stark genug sind um den Empfang des restlichen Spektrums zu beeinträchtigen.
 Der Frequenzbereich von Interesse wird anschliessend in mehreren Stufen verstärkt. Die Verstärkung kann mittels Software angepasst werden. Im letzten Schritt wird das Signal von einem Analog-Digital-Konverter digitalisiert und an den digitalen Teil des Empfängers weitergeleitet.
