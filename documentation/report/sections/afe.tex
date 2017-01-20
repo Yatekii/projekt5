@@ -243,7 +243,7 @@ Eine Umsetzung mit Schaltregler wäre prinzipiell vorstellbar. Eine solche Lösu
 
 Beim Design der Leiterplatte wurde darauf geachtet, dass die leistungsführenden Leitungen bis an die Chipanschlüsse möglichst breit gehalten wurden. Zudem ist die Massenfläche zur besseren Abführung der abfallenden thermischen Leistung mehrfach durchkontaktiert.
 
-Zur Kompensation der abnehmenden PSRR in höheren Frequenzen und Filterung der Spannung von externen Quellen ist in beiden Spannungsnetzen ein Pi-Tiefpass-Filter eingebaut.
+Zur Kompensation der abnehmenden PSRR in höheren Frequenzen und Filterung der Spannung von externen Quellen ist in beiden Spannungsnetzen ein Tiefpass-Filter eingebaut. Es wurde vom vorgehenden Projekt dimensioniert und von den Werten her übernommen.
 
 \begin{figure}[H]
 	\begin{center}
@@ -266,12 +266,18 @@ Zur Kompensation der abnehmenden PSRR in höheren Frequenzen und Filterung der S
 			node[rground]{};
 
 		\end{circuitikz}
-		\caption{Schema des Rauschfilters}
+		\caption{Schema des Filters der Stromversorgungen}
 		\label{fig:powerfilter}
 	\end{center}
 \end{figure}
 
-% GRAFIK SIMPLOT
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[clip,scale=0.4]{data/images/messungen/pifilter}
+		\caption{Simulation des Versorgungsfilters}
+		\label{fig:pifilter-plot}
+	\end{center}
+\end{figure}
 
 \subsection{Stromversorgung}
 Die beiden Spannungsnetze werden wie folgt verwendet.
